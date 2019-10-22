@@ -8,19 +8,32 @@ import activity.exception.TooManyObjectsException;
 import environment.Environment;
 import environment.feature.Feature;
 import pokemon.Pokemon;
+import pokemon.characteristic.Characteristic;
 
 import java.util.ArrayList;
 
 public class App {
     public static void main(String[] args) throws NoObjectException, CannotActivityException, NoFeatureException, TooManyObjectsException {
-        Pokemon pokemon = new Pokemon("Муми-папа", new ArrayList<IActivity>() {{
+        Pokemon fille = new Pokemon("Филле", new ArrayList<IActivity>() {{
+            add(new Go());
+        }});
+        Pokemon rulle = new Pokemon("Рулле", new ArrayList<IActivity>() {{
+            add(new Go());
+        }});
+        Pokemon oskar = new Pokemon("Оскар", new ArrayList<IActivity>() {{
             add(new Sit());
         }});
+        oskar.addCharacteristic(new Characteristic("бедный"));
 
-        Environment rock = new Environment("камень", new ArrayList<Feature>() {{
+        Environment hall = new Environment("прихожая", new ArrayList<Feature>() {{
+            add(new Feature("можно идти"));
+        }});
+        Environment chair = new Environment("стул", new ArrayList<Feature>() {{
             add(new Feature("можно сидеть"));
         }});
 
-        pokemon.doActivity(System.out, "присесть", rock);
+        fille.doActivity(System.out, "идти", hall);
+        rulle.doActivity(System.out, "идти", hall);
+        oskar.doActivity(System.out, "присесть", chair);
     }
 }
