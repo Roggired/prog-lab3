@@ -1,8 +1,13 @@
 package pokemon;
 
-import activity.CannotActivityException;
-import activity.IActivity;
+import activity.*;
+import activity.exception.CannotActivityException;
+import activity.exception.NoFeatureException;
+import activity.exception.NoObjectException;
+import activity.exception.TooManyObjectsException;
+import environment.Environment;
 
+import java.io.PrintStream;
 import java.util.List;
 
 public class Pokemon {
@@ -19,31 +24,47 @@ public class Pokemon {
     }
 
 
+    public String getName() {
+        return name;
+    }
+    public void printInfo(PrintStream printStream) {
+        StringBuilder stringBuilder = new StringBuilder(name);
+        stringBuilder.append(" can:");
+        activities.forEach(activity -> {
+            stringBuilder.append(System.lineSeparator() + activity.getName());
+        });
+
+        printStream.println(stringBuilder.toString());
+    }
+
+
     public void learnActivity(IActivity activity) {
         activities.add(activity);
     }
-    public void doActivity(String name) throws CannotActivityException {
+    public void doActivity(PrintStream printStream,
+                           String name,
+                           Environment ...environments) throws CannotActivityException,
+            NoObjectException,
+            NoFeatureException,
+            TooManyObjectsException {
         if (!canActivity(name)) {
             throw new CannotActivityException(createCannotActivityExceptionText(name));
         }
 
         for (IActivity activity: activities) {
             if (activity.getName().equals(name)) {
-                activity.executeFor(this);
+                activity.executeFor(printStream, this, environments);
             }
         }
     }
     private boolean canActivity(String name) {
-        boolean can = false;
-
         for (IActivity activity : activities) {
             if (activity.getName().equals(name)) {
-                can = true;
-                break;
+                return true;
             }
         }
 
-        return can;
+        return false;
     }
     private String createCannotActivityExceptionText(String activityName) {
         return this.getClass() + " " + this.name + ": 'I cannot do " + activityName + "!'";

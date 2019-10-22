@@ -1,29 +1,62 @@
 package environment;
 
-import java.io.PrintStream;
+import environment.feature.Feature;
+
 import java.util.List;
 
-public abstract class Environment {
-    protected String name;
-    protected List<Environment> environmentalObjects;
+public class Environment {
+    private String name;
+    private List<Environment> environmentalObjects;
+    private List<Feature> features;
 
 
     public Environment(String name) {
         this.name = name;
     }
 
-    public Environment(String name, List<Environment> environmentalObjects) {
+    public Environment(String name, List<Feature> features) {
+        this.name = name;
+        this.features = features;
+    }
+
+    public Environment(String name,
+                       List<Environment> environmentalObjects,
+                       List<Feature> features) {
         this.name = name;
         this.environmentalObjects = environmentalObjects;
+        this.features = features;
     }
 
 
-    public void addEnvironmentalObject(Environment environmentalObject) {
-        if (environmentalObject != null) {
-            environmentalObjects.add(environmentalObject);
+    public boolean haveFeature(String featureName) {
+        for (Feature feature : features) {
+            if (feature.getName().equals(featureName)) {
+                return  true;
+            }
         }
+
+        return false;
     }
 
 
-    public abstract void printInfo(PrintStream printStream);
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().toString() + " name: " + name;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return super.equals(object);
+        //TODO: реализовать рекурсивную проверку на равенство
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
+        //TODO: реализовать хешкоды
+    }
 }
