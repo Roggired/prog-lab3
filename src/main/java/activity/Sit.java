@@ -1,5 +1,6 @@
 package activity;
 
+import activity.annotations.WithSingleObject;
 import activity.exception.NoFeatureException;
 import activity.exception.NoObjectException;
 import activity.exception.TooManyObjectsException;
@@ -8,8 +9,9 @@ import pokemon.Pokemon;
 
 import java.io.PrintStream;
 
+@WithSingleObject
 public class Sit implements IActivity {
-    private static final String NAME = "присесть";
+    public static final String NAME = "присесть";
 
 
     @Override
@@ -20,17 +22,7 @@ public class Sit implements IActivity {
     @Override
     public void executeFor(PrintStream printStream,
                            Pokemon pokemon,
-                           Environment... environments) throws NoObjectException,
-            NoFeatureException,
-            TooManyObjectsException {
-        if (environments.length == 0) {
-            throw new NoObjectException(this.getClass() + " Нужен объект, чтобы сесть на него!");
-        }
-
-        if (environments.length > 1) {
-            throw new TooManyObjectsException(this.getClass() + " Одновременно можно сидеть только на одном объекте!");
-        }
-
+                           Environment... environments) throws NoFeatureException {
         if (!environments[0].haveFeature("можно сидеть")) {
             throw new NoFeatureException(this.getClass() + " Нельзя сидеть на том, на чем нельзя сидеть!");
         }

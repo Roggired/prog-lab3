@@ -1,6 +1,6 @@
 package activity.exception;
 
-public class TooManyObjectsException extends Exception{
+public class TooManyObjectsException extends ActivityException{
     public TooManyObjectsException(String text) {
         super(text);
     }

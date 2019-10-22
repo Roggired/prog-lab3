@@ -1,6 +1,6 @@
 package activity.exception;
 
-public class NoFeatureException extends Exception {
+public class NoFeatureException extends ActivityException {
     public NoFeatureException(String text) {
         super(text);
     }

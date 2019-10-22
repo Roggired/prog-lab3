@@ -13,7 +13,5 @@ public interface IActivity {
 
     void executeFor(PrintStream printStream,
                     Pokemon pokemon,
-                    Environment ...environments) throws NoObjectException,
-            NoFeatureException,
-            TooManyObjectsException;
+                    Environment ...environments) throws NoObjectException, NoFeatureException, TooManyObjectsException;
 }

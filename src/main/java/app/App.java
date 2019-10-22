@@ -1,19 +1,15 @@
 package app;
 
 import activity.*;
-import activity.exception.CannotActivityException;
-import activity.exception.NoFeatureException;
-import activity.exception.NoObjectException;
-import activity.exception.TooManyObjectsException;
+import activity.exception.*;
 import environment.Environment;
 import environment.feature.Feature;
 import pokemon.Pokemon;
 import pokemon.characteristic.Characteristic;
-
 import java.util.ArrayList;
 
 public class App {
-    public static void main(String[] args) throws NoObjectException, CannotActivityException, NoFeatureException, TooManyObjectsException {
+    public static void main(String[] args) throws ActivityException {
         Pokemon fille = new Pokemon("Филле", new ArrayList<IActivity>() {{
             add(new Go());
         }});
@@ -21,7 +17,7 @@ public class App {
             add(new Go());
         }});
         Pokemon oskar = new Pokemon("Оскар", new ArrayList<IActivity>() {{
-            add(new Sit());
+            add(new StayAlong());
         }});
         oskar.addCharacteristic(new Characteristic("бедный"));
 
@@ -32,8 +28,8 @@ public class App {
             add(new Feature("можно сидеть"));
         }});
 
-        fille.doActivity(System.out, "идти", hall);
-        rulle.doActivity(System.out, "идти", hall);
-        oskar.doActivity(System.out, "присесть", chair);
+        fille.doActivity(System.out, Go.NAME, hall);
+        rulle.doActivity(System.out, Go.NAME, hall);
+        oskar.doActivity(System.out, StayAlong.NAME);
     }
 }

@@ -1,5 +1,6 @@
 package activity;
 
+import activity.annotations.WithSingleObject;
 import activity.exception.NoFeatureException;
 import activity.exception.NoObjectException;
 import activity.exception.TooManyObjectsException;
@@ -8,8 +9,9 @@ import pokemon.Pokemon;
 
 import java.io.PrintStream;
 
+@WithSingleObject
 public class Go implements IActivity {
-    private static final String NAME = "идти";
+    public static final String NAME = "идти";
 
 
     @Override
@@ -20,15 +22,7 @@ public class Go implements IActivity {
     @Override
     public void executeFor(PrintStream printStream,
                            Pokemon pokemon,
-                           Environment... environments) throws NoObjectException, NoFeatureException, TooManyObjectsException {
-        if (environments.length == 0) {
-            throw new NoObjectException("нужно место, куда можно идти");
-        }
-
-        if (environments.length > 1) {
-            throw new TooManyObjectsException("нельзя сразу идти в несколько мест");
-        }
-
+                           Environment... environments) throws NoFeatureException {
         if (!environments[0].haveFeature("можно идти")) {
             throw new NoFeatureException("нельзя идти туда, куда нельзя идти");
         }
