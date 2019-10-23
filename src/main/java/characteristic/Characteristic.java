@@ -1,4 +1,4 @@
-package pokemon.characteristic;
+package characteristic;
 
 public class Characteristic {
     private String name;

@@ -8,8 +8,8 @@ import pokemon.Pokemon;
 import java.io.PrintStream;
 
 @WithSingleObject
-public class Go implements IActivity {
-    public static final String NAME = "идти";
+public class GoIn implements IActivity {
+    public static final String NAME = "идти в";
 
 
     @Override

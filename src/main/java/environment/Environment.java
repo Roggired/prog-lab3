@@ -1,13 +1,18 @@
 package environment;
 
+import characteristic.Characteristic;
 import environment.feature.Feature;
 
+import javax.lang.model.element.Name;
+import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Environment {
     private String name;
-    private List<Environment> environmentalObjects;
-    private List<Feature> features;
+    private List<Environment> environmentalObjects = new ArrayList<>();
+    private List<Feature> features = new ArrayList<>();
+    private List<Characteristic> characteristics = new ArrayList<>();
 
 
     public Environment(String name) {
@@ -28,6 +33,12 @@ public class Environment {
     }
 
 
+    public void addCharacteristic(Characteristic characteristic) {
+        if (characteristics == null) {
+            characteristics = new ArrayList<>();
+        }
+        characteristics.add(characteristic);
+    }
     public boolean haveFeature(String featureName) {
         for (Feature feature : features) {
             if (feature.getName().equals(featureName)) {
@@ -39,6 +50,20 @@ public class Environment {
     }
 
 
+    public void printInfo(PrintStream printStream) {
+        StringBuilder stringBuilder = new StringBuilder(name);
+        stringBuilder.append("\n");
+        stringBuilder.append("Включает в себя: ");
+        environmentalObjects.forEach(environment -> stringBuilder.append(environment.getName()));
+        stringBuilder.append("\n");
+        stringBuilder.append("Имеет фичи: ");
+        features.forEach(feature -> stringBuilder.append(feature.getName()));
+        stringBuilder.append("\n");
+        stringBuilder.append("Имеет характеристики: ");
+        characteristics.forEach(characteristic -> stringBuilder.append(characteristic.getName()));
+
+        printStream.println(stringBuilder.toString());
+    }
     public String getName() {
         return name;
     }

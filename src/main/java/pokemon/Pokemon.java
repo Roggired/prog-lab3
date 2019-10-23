@@ -2,9 +2,10 @@ package pokemon;
 
 import activity.*;
 import activity.annotations.WithSingleObject;
+import activity.annotations.WithTwoObject;
 import activity.exception.*;
 import environment.Environment;
-import pokemon.characteristic.Characteristic;
+import characteristic.Characteristic;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -90,6 +91,7 @@ public class Pokemon {
     //TODO: инкапсулировать логику проверок
     private void checkEnvironmentForActivity(IActivity activity, Environment ...environments) throws ActivityException {
         checkWithSingleObjectActivity(activity, environments);
+        checkWithTwoObjectActivity(activity, environments);
     }
     private void checkWithSingleObjectActivity(IActivity activity, Environment ...environments) throws ActivityException {
         Object object = activity.getClass().getAnnotation(WithSingleObject.class);
@@ -99,6 +101,22 @@ public class Pokemon {
             }
 
             if (environments.length > 1) {
+                throw new TooManyObjectsException(activity.getName() + " is " + object.toString());
+            }
+        }
+    }
+    private void checkWithTwoObjectActivity(IActivity activity, Environment... environments) throws ActivityException {
+        Object object = activity.getClass().getAnnotation(WithTwoObject.class);
+        if (object != null) {
+            if (environments.length == 0) {
+                throw new NoObjectException(activity.getName() + " is " + object.toString());
+            }
+
+            if (environments.length == 1) {
+                throw new NotEnoughObjectsException(activity.getName() + " is " + object.toString());
+            }
+
+            if (environments.length > 2) {
                 throw new TooManyObjectsException(activity.getName() + " is " + object.toString());
             }
         }
