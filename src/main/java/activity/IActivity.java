@@ -1,8 +1,6 @@
 package activity;
 
-import activity.exception.NoFeatureException;
-import activity.exception.NoObjectException;
-import activity.exception.TooManyObjectsException;
+import activity.exception.ActivityException;
 import environment.Environment;
 import pokemon.Pokemon;
 
@@ -13,5 +11,5 @@ public interface IActivity {
 
     void executeFor(PrintStream printStream,
                     Pokemon pokemon,
-                    Environment ...environments) throws NoObjectException, NoFeatureException, TooManyObjectsException;
+                    Environment ...environments) throws ActivityException;
 }

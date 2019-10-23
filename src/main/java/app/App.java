@@ -18,6 +18,8 @@ public class App {
         }});
         Pokemon oskar = new Pokemon("Оскар", new ArrayList<IActivity>() {{
             add(new StayAlong());
+            add(new Bore());
+            add(new Go());
         }});
         oskar.addCharacteristic(new Characteristic("бедный"));
 
@@ -31,5 +33,8 @@ public class App {
         fille.doActivity(System.out, Go.NAME, hall);
         rulle.doActivity(System.out, Go.NAME, hall);
         oskar.doActivity(System.out, StayAlong.NAME);
+        oskar.doActivity(System.out, Bore.NAME);
+        oskar.doActivityBecause("Чтобы посмотреть, что делают его новые друзья",
+                                System.out, Go.NAME, hall);
     }
 }

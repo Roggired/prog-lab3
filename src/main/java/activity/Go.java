@@ -2,8 +2,6 @@ package activity;
 
 import activity.annotations.WithSingleObject;
 import activity.exception.NoFeatureException;
-import activity.exception.NoObjectException;
-import activity.exception.TooManyObjectsException;
 import environment.Environment;
 import pokemon.Pokemon;
 
@@ -27,7 +25,7 @@ public class Go implements IActivity {
             throw new NoFeatureException("нельзя идти туда, куда нельзя идти");
         }
 
-        String result = pokemon.getName() + " пошел в\\на " + environments[0].getName();
+        String result = pokemon.getName() + " пошел в " + environments[0].getName();
         printStream.println(result);
     }
 }

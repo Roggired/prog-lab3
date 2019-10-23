@@ -71,6 +71,13 @@ public class Pokemon {
             }
         }
     }
+    public void doActivityBecause(String cause,
+                                  PrintStream printStream,
+                                  String name,
+                                  Environment ...environments) throws ActivityException {
+        doActivity(printStream, name, environments);
+        printStream.println(cause);
+    }
     private boolean canActivity(String name) {
         for (IActivity activity : activities) {
             if (activity.getName().equals(name)) {
@@ -80,6 +87,7 @@ public class Pokemon {
 
         return false;
     }
+    //TODO: инкапсулировать логику проверок
     private void checkEnvironmentForActivity(IActivity activity, Environment ...environments) throws ActivityException {
         checkWithSingleObjectActivity(activity, environments);
     }
