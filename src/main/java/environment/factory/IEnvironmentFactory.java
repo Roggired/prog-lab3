@@ -1,5 +1,6 @@
-package environment;
+package environment.factory;
 
+import environment.Environment;
 import environment.feature.Feature;
 
 import java.util.List;

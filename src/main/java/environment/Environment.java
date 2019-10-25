@@ -1,24 +1,25 @@
 package environment;
 
 import characteristic.Characteristic;
-import com.google.inject.Inject;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import environment.feature.Feature;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Environment {
+    @JsonProperty
     private String name;
 
-    private List<Environment> environmentalObjects = new ArrayList<>();
-
+    @JsonProperty
     private List<Feature> features;
 
     private List<Characteristic> characteristics = new ArrayList<>();
 
+
+    public Environment() {}
 
     @AssistedInject
     public Environment(@Assisted String name, @Assisted List<Feature> features) {
@@ -44,28 +45,13 @@ public class Environment {
     }
 
 
-    public void printInfo(PrintStream printStream) {
-        StringBuilder stringBuilder = new StringBuilder(name);
-        stringBuilder.append("\n");
-        stringBuilder.append("Включает в себя: ");
-        environmentalObjects.forEach(environment -> stringBuilder.append(environment.getName()));
-        stringBuilder.append("\n");
-        stringBuilder.append("Имеет фичи: ");
-        features.forEach(feature -> stringBuilder.append(feature.getName()));
-        stringBuilder.append("\n");
-        stringBuilder.append("Имеет характеристики: ");
-        characteristics.forEach(characteristic -> stringBuilder.append(characteristic.getName()));
-
-        printStream.println(stringBuilder.toString());
-    }
-
     public String getName() {
         return name;
     }
     public String getNameWithCharacteristics() {
         if (characteristics != null && !characteristics.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
-            characteristics.forEach(characteristic -> stringBuilder.append(characteristic.getName() + " "));
+            characteristics.forEach(characteristic -> stringBuilder.append(characteristic.getName()).append(" "));
 
             return stringBuilder.toString() + name;
         }

@@ -1,10 +1,12 @@
 package app.injector;
 
+import activity.factory.IActivityFactory;
+import activity.factory.JSONActivityFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import environment.Environment;
-import environment.IEnvironmentFactory;
-import pokemon.IPokemonFactory;
+import environment.factory.IEnvironmentFactory;
+import pokemon.factory.IPokemonFactory;
 import pokemon.Pokemon;
 
 public class FactoryModule extends AbstractModule {
@@ -17,5 +19,6 @@ public class FactoryModule extends AbstractModule {
         install(new FactoryModuleBuilder()
                 .implement(Pokemon.class, Pokemon.class)
                 .build(IPokemonFactory.class));
+        bind(IActivityFactory.class).to(JSONActivityFactory.class);
     }
 }

@@ -2,63 +2,43 @@ package app;
 
 import activity.*;
 import activity.exception.*;
+import activity.factory.IActivityFactory;
 import app.injector.FactoryModule;
 import characteristic.Characteristic;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.*;
 import environment.Environment;
-import environment.IEnvironmentFactory;
-import environment.feature.Feature;
-import pokemon.IPokemonFactory;
+import pokemon.DTOPokemon;
+import pokemon.factory.IPokemonFactory;
 import pokemon.Pokemon;
 import stuff.AbstractClass;
 import stuff.Enum;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class App {
+    private static final String ENVIRONMENT_JSONS_DIRECTORY = "jsons/environments/";
+    private static final String POKEMON_JSONS_DIRECTORY = "jsons/pokemons/";
+
+
     public static void main(String[] args) throws ActivityException {
+        ObjectMapper mapper = new ObjectMapper();
         Injector injector = Guice.createInjector(new FactoryModule());
 
-        IPokemonFactory pokemonFactory = injector.getInstance(IPokemonFactory.class);
-        Pokemon fille = pokemonFactory.create("Филле", new ArrayList<IActivity>() {{
-            add(new GoIn());
-            add(new See());
-        }});
-        Pokemon rulle = pokemonFactory.create("Рулле", new ArrayList<IActivity>() {{
-            add(new GoIn());
-            add(new See());
-        }});
-        Pokemon oskar = pokemonFactory.create("Оскар", new ArrayList<IActivity>() {{
-            add(new StayAlong());
-            add(new Bore());
-            add(new GoIn());
-            add(new See());
-        }});
-        Pokemon karlson = pokemonFactory.create("Карлсон", new ArrayList<IActivity>() {{
-            add(new GoOver());
-            add(new PutIn());
-            add(new AttachTo());
-        }});
+        Pokemon fille = createPokemonFromJSON("fille.json", mapper, injector);
+        Pokemon rulle = createPokemonFromJSON("rulle.json", mapper, injector);
+        Pokemon oskar = createPokemonFromJSON("oskar.json", mapper, injector);
+        Pokemon karlson = createPokemonFromJSON("karlson.json", mapper, injector);
 
-        IEnvironmentFactory environmentFactory = injector.getInstance(IEnvironmentFactory.class);
-        Environment hall = environmentFactory.create("прихожая", new ArrayList<Feature>() {{
-            add(new Feature(GoIn.REQUIRED_FEATURE));
-        }});
-        Environment underWindow = environmentFactory.create("подоконник", new ArrayList<Feature>() {{
-            add(new Feature(GoOver.REQUIRED_FEATURE));
-        }});
-        Environment wallet = environmentFactory.create("бумажник", new ArrayList<Feature>() {{
-            add(new Feature(PutIn.OBJECT_REQUIRED_FEATURE));
-        }});
-        Environment soupBowl = environmentFactory.create("суповая миска", new ArrayList<Feature>() {{
-            add(new Feature(PutIn.CONTAINER_REQUIRED_FEATURE));
-        }});
-        Environment watches = environmentFactory.create("часы", new ArrayList<Feature>() {{
-            add(new Feature(AttachTo.OBJECT_REQUIRED_FEATURE));
-        }});
-        Environment lamp = environmentFactory.create("лампа", new ArrayList<Feature>() {{
-            add(new Feature(AttachTo.CONTAINER_REQUIRED_FEATURE));
-        }});
+        Environment hall = createEnvironmentFromJSON("hall.json", mapper);
+        Environment underWindow = createEnvironmentFromJSON("underWindow.json", mapper);
+        Environment wallet = createEnvironmentFromJSON("wallet.json", mapper);
+        Environment soupBowl = createEnvironmentFromJSON("soupBowl.json", mapper);
+        Environment watches = createEnvironmentFromJSON("watches.json", mapper);
+        Environment lamp = createEnvironmentFromJSON("lamp.json", mapper);
 
         fille.doActivity(System.out, GoIn.NAME, hall);
         rulle.doActivity(System.out, GoIn.NAME, hall);
@@ -90,5 +70,40 @@ public class App {
         }
         new MyCoolClass().yeahAaaabstract();
 
+    }
+
+    private static Pokemon createPokemonFromJSON(String fileName,
+                                          ObjectMapper objectMapper,
+                                          Injector injector) {
+        DTOPokemon dtoPokemon = null;
+        try {
+            dtoPokemon = objectMapper.readValue(
+                    Objects.requireNonNull(App.class.getClassLoader()
+                            .getResourceAsStream(POKEMON_JSONS_DIRECTORY + fileName)), DTOPokemon.class);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            System.exit(1);
+        }
+
+        IActivityFactory activityFactory = injector.getInstance(IActivityFactory.class);
+        IPokemonFactory pokemonFactory = injector.getInstance(IPokemonFactory.class);
+
+        List<Characteristic> characteristics = new ArrayList<>();
+        dtoPokemon.characteristicsStrings.forEach(string -> characteristics.add(new Characteristic(string)));
+
+        return pokemonFactory.create(dtoPokemon.name, characteristics, activityFactory.create(dtoPokemon.activitiesNames));
+    }
+    private static Environment createEnvironmentFromJSON(String fileName,
+                                                         ObjectMapper objectMapper) {
+        try {
+            return objectMapper.readValue(Objects.requireNonNull(
+                    App.class.getClassLoader()
+                            .getResourceAsStream(ENVIRONMENT_JSONS_DIRECTORY + fileName)), Environment.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        return null;
     }
 }

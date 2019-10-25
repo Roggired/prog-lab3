@@ -9,7 +9,6 @@ import characteristic.Characteristic;
 import pokemon.healthySense.HealthySense;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Pokemon {
@@ -22,45 +21,26 @@ public class Pokemon {
     @AssistedInject
     public Pokemon(@Assisted String name,
                    @Assisted List<IActivity> activities,
+                   @Assisted List<Characteristic> characteristics,
                    HealthySense healthySense) {
         this.name = name;
+        this.characteristics = characteristics;
         this.activities = activities;
         this.healthySense = healthySense;
     }
 
 
-    public void addCharacteristic(Characteristic characteristic) {
-        if (characteristics == null) {
-            characteristics = new ArrayList<>();
-        }
-
-        characteristics.add(characteristic);
-    }
-    public void setCharacteristics(List<Characteristic> characteristics) {
-        this.characteristics = characteristics;
-    }
     public String getName() {
         if (characteristics != null && !characteristics.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
-            characteristics.forEach(characteristic -> stringBuilder.append(characteristic.getName() + " "));
+            characteristics.forEach(characteristic -> stringBuilder.append(characteristic.getName()).append(" "));
 
             return stringBuilder.toString() + name;
         }
 
         return name;
     }
-    public void printInfo(PrintStream printStream) {
-        StringBuilder stringBuilder = new StringBuilder(getName());
-        stringBuilder.append(" can:");
-        activities.forEach(activity -> stringBuilder.append(System.lineSeparator() + activity.getName()));
 
-        printStream.println(stringBuilder.toString());
-    }
-
-
-    public void learnActivity(IActivity activity) {
-        activities.add(activity);
-    }
     public void doActivity(PrintStream printStream,
                            String name,
                            Environment ...environments) throws ActivityException {
