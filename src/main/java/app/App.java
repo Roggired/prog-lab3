@@ -10,6 +10,8 @@ import environment.IEnvironmentFactory;
 import environment.feature.Feature;
 import pokemon.IPokemonFactory;
 import pokemon.Pokemon;
+import stuff.AbstractClass;
+import stuff.Enum;
 
 import java.util.ArrayList;
 
@@ -73,5 +75,20 @@ public class App {
         fille.doActivityBecause("Когда вернулся в комнату", System.out, See.NAME, watches);
         rulle.doActivityBecause("Когда вернулся в комнату", System.out, See.NAME, watches);
         oskar.doActivityBecause("Когда вернулся в комнату", System.out, See.NAME, watches);
+
+
+        System.out.println();
+        System.out.println();
+
+        System.out.println(Enum.THIS + " " + Enum.IS + " " + Enum.ENUM);
+
+        class MyCoolClass extends AbstractClass {
+            @Override
+            public void yeahAaaabstract() {
+                System.out.println("Do some abstract stuff");
+            }
+        }
+        new MyCoolClass().yeahAaaabstract();
+
     }
 }

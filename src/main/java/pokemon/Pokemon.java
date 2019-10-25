@@ -1,13 +1,12 @@
 package pokemon;
 
 import activity.*;
-import activity.annotations.WithSingleObject;
-import activity.annotations.WithTwoObject;
 import activity.exception.*;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import environment.Environment;
 import characteristic.Characteristic;
+import pokemon.healthySense.HealthySense;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -17,12 +16,16 @@ public class Pokemon {
     private String name;
     private List<IActivity> activities;
     private List<Characteristic> characteristics;
+    private HealthySense healthySense;
 
 
     @AssistedInject
-    public Pokemon(@Assisted String name, @Assisted List<IActivity> activities) {
+    public Pokemon(@Assisted String name,
+                   @Assisted List<IActivity> activities,
+                   HealthySense healthySense) {
         this.name = name;
         this.activities = activities;
+        this.healthySense = healthySense;
     }
 
 
@@ -67,7 +70,7 @@ public class Pokemon {
 
         for (IActivity activity: activities) {
             if (activity.getName().equals(name)) {
-                checkEnvironmentForActivity(activity, environments);
+                healthySense.checkEnvironmentForActivity(activity, environments);
                 activity.executeFor(printStream, this, environments);
             }
         }
@@ -87,39 +90,6 @@ public class Pokemon {
         }
 
         return false;
-    }
-    //TODO: инкапсулировать логику проверок
-    private void checkEnvironmentForActivity(IActivity activity, Environment ...environments) throws ActivityException {
-        checkWithSingleObjectActivity(activity, environments);
-        checkWithTwoObjectActivity(activity, environments);
-    }
-    private void checkWithSingleObjectActivity(IActivity activity, Environment ...environments) throws ActivityException {
-        Object object = activity.getClass().getAnnotation(WithSingleObject.class);
-        if (object != null) {
-            if (environments.length == 0) {
-                throw new NoObjectException(activity.getName() + " is " + object.toString());
-            }
-
-            if (environments.length > 1) {
-                throw new TooManyObjectsException(activity.getName() + " is " + object.toString());
-            }
-        }
-    }
-    private void checkWithTwoObjectActivity(IActivity activity, Environment... environments) throws ActivityException {
-        Object object = activity.getClass().getAnnotation(WithTwoObject.class);
-        if (object != null) {
-            if (environments.length == 0) {
-                throw new NoObjectException(activity.getName() + " is " + object.toString());
-            }
-
-            if (environments.length == 1) {
-                throw new NotEnoughObjectsException(activity.getName() + " is " + object.toString());
-            }
-
-            if (environments.length > 2) {
-                throw new TooManyObjectsException(activity.getName() + " is " + object.toString());
-            }
-        }
     }
     private String createCannotActivityExceptionText(String activityName) {
         return this.getClass() + " " + this.name + ": 'I cannot do " + activityName + "!'";
