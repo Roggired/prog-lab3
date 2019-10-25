@@ -10,6 +10,7 @@ import java.io.PrintStream;
 @WithSingleObject
 public class GoIn implements IActivity {
     public static final String NAME = "идти в";
+    public static final String REQUIRED_FEATURE = "можно идти";
 
 
     @Override
@@ -21,7 +22,7 @@ public class GoIn implements IActivity {
     public void executeFor(PrintStream printStream,
                            Pokemon pokemon,
                            Environment... environments) throws NoFeatureException {
-        if (!environments[0].haveFeature("можно идти")) {
+        if (!environments[0].haveFeature(REQUIRED_FEATURE)) {
             throw new NoFeatureException("нельзя идти туда, куда нельзя идти");
         }
 

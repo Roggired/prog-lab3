@@ -11,6 +11,7 @@ import java.io.PrintStream;
 @WithSingleObject
 public class GoOver implements IActivity {
     public static final String NAME = "перемахнуть";
+    public static final String REQUIRED_FEATURE = "можно перемахнуть";
 
 
     @Override
@@ -22,7 +23,7 @@ public class GoOver implements IActivity {
     public void executeFor(PrintStream printStream,
                            Pokemon pokemon,
                            Environment... environments) throws ActivityException {
-        if (!environments[0].haveFeature("можно перемахнуть")) {
+        if (!environments[0].haveFeature(REQUIRED_FEATURE)) {
             throw new NoFeatureException("Нельзя перемахнуть через то, через что нельзя");
         }
 

@@ -4,6 +4,8 @@ import activity.*;
 import activity.annotations.WithSingleObject;
 import activity.annotations.WithTwoObject;
 import activity.exception.*;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import environment.Environment;
 import characteristic.Characteristic;
 
@@ -17,10 +19,8 @@ public class Pokemon {
     private List<Characteristic> characteristics;
 
 
-    public Pokemon(String name) {
-        this.name = name;
-    }
-    public Pokemon(String name, List<IActivity> activities) {
+    @AssistedInject
+    public Pokemon(@Assisted String name, @Assisted List<IActivity> activities) {
         this.name = name;
         this.activities = activities;
     }

@@ -1,34 +1,28 @@
 package environment;
 
 import characteristic.Characteristic;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import environment.feature.Feature;
 
-import javax.lang.model.element.Name;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Environment {
     private String name;
+
     private List<Environment> environmentalObjects = new ArrayList<>();
-    private List<Feature> features = new ArrayList<>();
+
+    private List<Feature> features;
+
     private List<Characteristic> characteristics = new ArrayList<>();
 
 
-    public Environment(String name) {
+    @AssistedInject
+    public Environment(@Assisted String name, @Assisted List<Feature> features) {
         this.name = name;
-    }
-
-    public Environment(String name, List<Feature> features) {
-        this.name = name;
-        this.features = features;
-    }
-
-    public Environment(String name,
-                       List<Environment> environmentalObjects,
-                       List<Feature> features) {
-        this.name = name;
-        this.environmentalObjects = environmentalObjects;
         this.features = features;
     }
 
@@ -64,7 +58,18 @@ public class Environment {
 
         printStream.println(stringBuilder.toString());
     }
+
     public String getName() {
+        return name;
+    }
+    public String getNameWithCharacteristics() {
+        if (characteristics != null && !characteristics.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            characteristics.forEach(characteristic -> stringBuilder.append(characteristic.getName() + " "));
+
+            return stringBuilder.toString() + name;
+        }
+
         return name;
     }
 

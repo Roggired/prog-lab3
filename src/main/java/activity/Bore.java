@@ -1,6 +1,5 @@
 package activity;
 
-import activity.exception.ActivityException;
 import environment.Environment;
 import pokemon.Pokemon;
 
