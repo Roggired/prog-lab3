@@ -15,10 +15,31 @@ public class Bore implements IActivity {
     }
 
     @Override
-    public void executeFor(PrintStream printStream,
-                           Pokemon pokemon,
+    public String executeFor(Pokemon pokemon,
                            Environment... environments) {
-        String result = pokemon.getName() + " заскучал";
-        printStream.println(result);
+        return pokemon.getName() + " заскучал";
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+
+        if (!(object instanceof Bore)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return NAME.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().toString() + NAME;
     }
 }

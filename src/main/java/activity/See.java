@@ -17,16 +17,37 @@ public class See implements IActivity {
     }
 
     @Override
-    public void executeFor(PrintStream printStream,
-                           Pokemon pokemon,
+    public String executeFor(Pokemon pokemon,
                            Environment... environments) {
         if (environments.length == 0) {
-            String result = pokemon.getName() + " ничего не увидел";
-            printStream.println(result);
+            return pokemon.getName() + " ничего не увидел";
         }
 
         StringBuilder stringBuilder = new StringBuilder(pokemon.getName() + " увидел: ");
-        Arrays.asList(environments).forEach(environment -> stringBuilder.append(environment.getName() + " "));
-        printStream.println(stringBuilder.toString());
+        Arrays.asList(environments).forEach(environment -> stringBuilder.append(environment.getName()).append(" "));
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+
+        if (!(object instanceof See)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return NAME.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().toString() + NAME;
     }
 }

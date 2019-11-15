@@ -7,12 +7,14 @@ import environment.Environment;
 import pokemon.Pokemon;
 
 import java.io.PrintStream;
+import java.util.Objects;
+import java.util.Random;
 
 @WithTwoObject
 public class AttachTo implements IActivity {
     public static final String NAME = "прикрепить к";
-    public static final String OBJECT_REQUIRED_FEATURE = "это можно прикрепить";
-    public static final String CONTAINER_REQUIRED_FEATURE = "к этому можно прикрепить";
+    private static final String OBJECT_REQUIRED_FEATURE = "это можно прикрепить";
+    private static final String CONTAINER_REQUIRED_FEATURE = "к этому можно прикрепить";
 
 
     @Override
@@ -21,8 +23,7 @@ public class AttachTo implements IActivity {
     }
 
     @Override
-    public void executeFor(PrintStream printStream,
-                           Pokemon pokemon,
+    public String executeFor(Pokemon pokemon,
                            Environment... environments) throws ActivityException {
         if (!environments[0].haveFeature(OBJECT_REQUIRED_FEATURE)) {
             throw new NoFeatureException("Нельзя прикрепить то, что нельзя");
@@ -32,7 +33,29 @@ public class AttachTo implements IActivity {
             throw new NoFeatureException("Нельзя прикрепить к тому, к чему нельзя");
         }
 
-        String result = pokemon.getName() + " прикрепил " + environments[0].getName() + " к " + environments[1].getName();
-        printStream.println(result);
+        return pokemon.getName() + " прикрепил " + environments[0].getName() + " к " + environments[1].getName();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+
+        if (!(object instanceof AttachTo)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return NAME.hashCode() + OBJECT_REQUIRED_FEATURE.hashCode() + CONTAINER_REQUIRED_FEATURE.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().toString() + NAME + OBJECT_REQUIRED_FEATURE + CONTAINER_REQUIRED_FEATURE;
     }
 }

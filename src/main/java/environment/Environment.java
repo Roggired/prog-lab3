@@ -8,6 +8,7 @@ import environment.feature.Feature;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Environment {
     @JsonProperty
@@ -22,7 +23,8 @@ public class Environment {
     public Environment() {}
 
     @AssistedInject
-    public Environment(@Assisted String name, @Assisted List<Feature> features) {
+    public Environment(@Assisted String name,
+                       @Assisted List<Feature> features) {
         this.name = name;
         this.features = features;
     }
@@ -61,18 +63,59 @@ public class Environment {
 
     @Override
     public String toString() {
-        return getClass().toString() + " name: " + name;
+        return getClass().toString() + name + features.toString() + characteristics.toString();
     }
 
     @Override
     public boolean equals(Object object) {
-        return super.equals(object);
-        //TODO: реализовать рекурсивную проверку на равенство
+        if (!Objects.equals(this, object)) {
+            return false;
+        }
+
+        if (!name.equals(((Environment) object).name)) {
+            return false;
+        }
+
+        Environment environment = (Environment) object;
+
+        class ListContainsDeterminant<T> {
+            private boolean isEqualList(List<T> listA, List<T> listB) {
+                for (T objectA : listA) {
+                    boolean isContained = false;
+
+                    for (T objectB : listB) {
+                        if (objectA.equals(objectB)) {
+                            isContained = true;
+                            break;
+                        }
+                    }
+
+                    if (!isContained) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        ListContainsDeterminant<Feature> featuresDeterminant = new ListContainsDeterminant<>();
+
+        if (!featuresDeterminant.isEqualList(features, environment.features)) {
+            return false;
+        }
+
+        ListContainsDeterminant<Characteristic> characteristicsDeterminant = new ListContainsDeterminant<>();
+
+        if (!characteristicsDeterminant.isEqualList(characteristics, environment.characteristics)) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return 1;
-        //TODO: реализовать хешкоды
+        return name.hashCode() + features.hashCode() + characteristics.hashCode();
     }
 }

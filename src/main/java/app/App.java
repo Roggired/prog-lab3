@@ -40,27 +40,29 @@ public class App {
         Environment watches = createEnvironmentFromJSON("watches.json", mapper);
         Environment lamp = createEnvironmentFromJSON("lamp.json", mapper);
 
-        fille.doActivity(System.out, GoIn.NAME, hall);
-        rulle.doActivity(System.out, GoIn.NAME, hall);
-        oskar.doActivity(System.out, StayAlong.NAME);
-        oskar.doActivity(System.out, Bore.NAME);
-        oskar.doActivityBecause("Чтобы посмотреть, что делают его новые друзья", System.out, GoIn.NAME, hall);
-        karlson.doActivity(System.out, GoOver.NAME, underWindow);
-        karlson.doActivity(System.out, PutIn.NAME, wallet, soupBowl);
+        StringBuilder result = new StringBuilder();
+        result.append(fille.doActivity(GoIn.NAME, hall)).append(System.lineSeparator());
+        result.append(rulle.doActivity(GoIn.NAME, hall)).append(System.lineSeparator());
+        result.append(oskar.doActivity(StayAlong.NAME)).append(System.lineSeparator());
+        result.append(oskar.doActivity(Bore.NAME)).append(System.lineSeparator());
+        result.append(oskar.doActivityBecause("Чтобы посмотреть, что делают его новые друзья", GoIn.NAME, hall)).append(System.lineSeparator());
+        result.append(karlson.doActivity(GoOver.NAME, underWindow)).append(System.lineSeparator());
+        result.append(karlson.doActivity(PutIn.NAME, wallet, soupBowl)).append(System.lineSeparator());
         wallet.addCharacteristic(new Characteristic("сухой, потому что Филле, Рулле и Оскар уже съели весь суп"));
-        System.out.println(wallet.getNameWithCharacteristics());
-        karlson.doActivity(System.out, AttachTo.NAME, watches, lamp);
+        result.append(wallet.getNameWithCharacteristics()).append(System.lineSeparator());
+        result.append(karlson.doActivity(AttachTo.NAME, watches, lamp)).append(System.lineSeparator());
         watches.addCharacteristic(new Characteristic("висели на виду, слегка раскачиваясь"));
-        System.out.println(watches.getNameWithCharacteristics());
-        fille.doActivityBecause("Когда вернулся в комнату", System.out, See.NAME, watches);
-        rulle.doActivityBecause("Когда вернулся в комнату", System.out, See.NAME, watches);
-        oskar.doActivityBecause("Когда вернулся в комнату", System.out, See.NAME, watches);
+        result.append(watches.getNameWithCharacteristics()).append(System.lineSeparator());
+        result.append(fille.doActivityBecause("Когда вернулся в комнату", See.NAME, watches)).append(System.lineSeparator());
+        result.append(rulle.doActivityBecause("Когда вернулся в комнату", See.NAME, watches)).append(System.lineSeparator());
+        result.append(oskar.doActivityBecause("Когда вернулся в комнату", See.NAME, watches)).append(System.lineSeparator());
 
+        result.append(System.lineSeparator());
+        result.append(System.lineSeparator());
 
-        System.out.println();
-        System.out.println();
+        result.append(Enum.THIS + " " + Enum.IS + " " + Enum.ENUM).append(System.lineSeparator());
 
-        System.out.println(Enum.THIS + " " + Enum.IS + " " + Enum.ENUM);
+        System.out.println(result.toString());
 
         class MyCoolClass extends AbstractClass {
             @Override
@@ -96,8 +98,8 @@ public class App {
     private static Environment createEnvironmentFromJSON(String fileName,
                                                          ObjectMapper objectMapper) {
         try {
-            return objectMapper.readValue(Objects.requireNonNull(
-                    App.class.getClassLoader()
+            return objectMapper.readValue(
+                    Objects.requireNonNull(App.class.getClassLoader()
                             .getResourceAsStream(ENVIRONMENT_JSONS_DIRECTORY + fileName)), Environment.class);
         } catch (IOException e) {
             e.printStackTrace();
