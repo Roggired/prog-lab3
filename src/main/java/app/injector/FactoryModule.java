@@ -1,13 +1,13 @@
 package app.injector;
 
-import activity.factory.IActivityFactory;
-import activity.factory.JSONActivityFactory;
+import story.activity.factory.IActivityFactory;
+import story.activity.factory.JSONActivityFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import environment.Environment;
-import environment.factory.IEnvironmentFactory;
-import pokemon.factory.IPokemonFactory;
-import pokemon.Pokemon;
+import story.environment.Environment;
+import story.environment.factory.IEnvironmentFactory;
+import story.pokemon.factory.IPokemonFactory;
+import story.pokemon.Pokemon;
 
 public class FactoryModule extends AbstractModule {
 

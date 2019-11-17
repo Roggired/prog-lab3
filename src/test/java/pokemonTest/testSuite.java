@@ -1,14 +1,13 @@
 package pokemonTest;
 
-import activity.IActivity;
-import activity.StayAlong;
-import activity.exception.ActivityException;
+import story.activity.IActivity;
+import story.activity.StayAlong;
+import story.activity.exception.ActivityException;
 import org.junit.Assert;
 import org.junit.Test;
-import pokemon.Pokemon;
-import pokemon.healthySense.HealthySense;
+import story.pokemon.Pokemon;
+import story.pokemon.healthySense.HealthySense;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
