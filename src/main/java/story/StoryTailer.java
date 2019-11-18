@@ -88,9 +88,9 @@ public class StoryTailer {
         reasonProducers.add(rulle);
         reasonProducers.add(oskar);
 
-        List<IActivity> activities = new ArrayList<>();
-        activities.add(new Eat());
-        Reason reason = new ReasonBasedOnActivity(reasonProducers, activities);
+        List<String> activityNames = new ArrayList<>();
+        activityNames.add(Eat.NAME);
+        Reason reason = new ReasonBasedOnActivity(reasonProducers, activityNames);
         Characteristic characteristic = new Characteristic("сухой", reason);
         wallet.addCharacteristic(characteristic);
 
@@ -132,7 +132,7 @@ public class StoryTailer {
         IPokemonFactory pokemonFactory = injector.getInstance(IPokemonFactory.class);
 
         List<Characteristic> characteristics = new ArrayList<>();
-        dtoPokemon.characteristicsStrings.forEach(string -> characteristics.add(new Characteristic(string)));
+        dtoPokemon.characteristicsStrings.forEach(string -> characteristics.add(new Characteristic(string, null)));
 
         return pokemonFactory.create(dtoPokemon.name, characteristics, activityFactory.create(dtoPokemon.activitiesNames));
     }
