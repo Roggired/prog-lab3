@@ -14,6 +14,7 @@ public class StoryTailerConfiguration {
                   underWindowJsonFileName,
                   walletJsonFileName,
                   soupBownJsonFileName,
+                  soupJsonFileName,
                   watchesJsonFileName,
                   lampJsonFileName;
 }

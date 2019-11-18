@@ -6,6 +6,9 @@ import story.activity.*;
 import story.activity.exception.ActivityException;
 import story.activity.factory.IActivityFactory;
 import story.characteristic.Characteristic;
+import story.characteristic.reason.IReasonProducer;
+import story.characteristic.reason.Reason;
+import story.characteristic.reason.ReasonBasedOnActivity;
 import story.environment.Environment;
 import story.pokemon.DTOPokemon;
 import story.pokemon.Pokemon;
@@ -51,6 +54,8 @@ public class StoryTailer {
                                                        objectMapper);
         Environment soupBowl = createEnvironmentFromJSON(storyTailerConfiguration.soupBownJsonFileName,
                                                          objectMapper);
+        Environment soup = createEnvironmentFromJSON(storyTailerConfiguration.soupJsonFileName,
+                                                     objectMapper);
         Environment watches = createEnvironmentFromJSON(storyTailerConfiguration.watchesJsonFileName,
                                                         objectMapper);
         Environment lamp = createEnvironmentFromJSON(storyTailerConfiguration.lampJsonFileName,
@@ -74,14 +79,27 @@ public class StoryTailer {
         result.append(karlson.doActivity(PutIn.NAME, wallet, soupBowl))
                 .append(System.lineSeparator());
 
-        wallet.addCharacteristic(new Characteristic("сухой, потому что Филле, Рулле и Оскар уже съели весь суп"));
+        fille.doActivity(Eat.NAME, soup);
+        rulle.doActivity(Eat.NAME, soup);
+        oskar.doActivity(Eat.NAME, soup);
+
+        List<IReasonProducer> reasonProducers = new ArrayList<>();
+        reasonProducers.add(fille);
+        reasonProducers.add(rulle);
+        reasonProducers.add(oskar);
+
+        List<IActivity> activities = new ArrayList<>();
+        activities.add(new Eat());
+        Reason reason = new ReasonBasedOnActivity(reasonProducers, activities);
+        Characteristic characteristic = new Characteristic("сухой", reason);
+        wallet.addCharacteristic(characteristic);
 
         result.append(wallet.getNameWithCharacteristics())
                 .append(System.lineSeparator());
         result.append(karlson.doActivity(AttachTo.NAME, watches, lamp))
                 .append(System.lineSeparator());
 
-        watches.addCharacteristic(new Characteristic("висели на виду, слегка раскачиваясь"));
+        watches.addCharacteristic(new Characteristic("висели на виду, слегка раскачиваясь", null));
 
         result.append(watches.getNameWithCharacteristics())
                 .append(System.lineSeparator());

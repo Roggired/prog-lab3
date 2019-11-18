@@ -1,16 +1,21 @@
 package story.characteristic;
 
+import story.characteristic.reason.Reason;
+
 public class Characteristic {
     private String name;
+    private Reason reason;
 
 
-    public Characteristic(String name) {
+    public Characteristic(String name,
+                          Reason reason) {
         this.name = name;
+        this.reason = reason;
     }
 
 
     public String getName() {
-        return name;
+        return name + ", " + reason.getDescription();
     }
 
 

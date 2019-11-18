@@ -43,7 +43,7 @@ public class App {
         storyTailerConfiguration.oskarJsonFileName = "oskar.json";
         storyTailerConfiguration.karlsonJsonFileName = "karlson.json";
 
-        storyTailerConfiguration.environmentJsonDirectory = "jsons/environment/";
+        storyTailerConfiguration.environmentJsonDirectory = "jsons/environments/";
         storyTailerConfiguration.hallJsonFileName = "hall.json";
         storyTailerConfiguration.underWindowJsonFileName = "underWindow.json";
         storyTailerConfiguration.walletJsonFileName = "wallet.json";

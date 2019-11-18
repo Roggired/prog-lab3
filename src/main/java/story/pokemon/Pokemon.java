@@ -4,13 +4,14 @@ import story.activity.*;
 import story.activity.exception.*;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
+import story.characteristic.reason.IReasonProducer;
 import story.environment.Environment;
 import story.characteristic.Characteristic;
 import story.pokemon.healthySense.HealthySense;
 
 import java.util.List;
 
-public class Pokemon {
+public class Pokemon implements IReasonProducer {
     private String name;
     private List<IActivity> activities;
     private List<Characteristic> characteristics;
@@ -29,6 +30,7 @@ public class Pokemon {
     }
 
 
+    @Override
     public String getName() {
         if (characteristics != null && !characteristics.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
