@@ -1,9 +1,8 @@
 package app;
 
-import story.StoryTailer;
-import story.StoryTailerConfiguration;
+import story.teller.StoryTeller;
 import story.activity.exception.*;
-import app.injector.FactoryModule;
+import app.injector.Lab3Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.*;
 import stuff.AbstractClass;
@@ -12,14 +11,10 @@ import stuff.Enum;
 public class App {
     public static void main(String[] args) throws ActivityException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Injector injector = Guice.createInjector(new FactoryModule());
-        StoryTailerConfiguration storyTailerConfiguration = createStoryTailerConfiguration();
+        Injector injector = Guice.createInjector(new Lab3Module());
 
-        StoryTailer storyTailer = new StoryTailer(injector,
-                                                  objectMapper,
-                                                  storyTailerConfiguration);
-
-        String story = storyTailer.tellStory();
+        StoryTeller storyTeller = injector.getInstance(StoryTeller.class);
+        String story = storyTeller.tellStory(injector, objectMapper);
 
         System.out.println(story);
 
@@ -32,25 +27,5 @@ public class App {
             }
         }
         new MyCoolClass().yeahAaaabstract();
-    }
-
-    private static StoryTailerConfiguration createStoryTailerConfiguration() {
-        StoryTailerConfiguration storyTailerConfiguration = new StoryTailerConfiguration();
-
-        storyTailerConfiguration.pokemonJsonDirectory = "jsons/pokemons/";
-        storyTailerConfiguration.filleJsonFileName = "fille.json";
-        storyTailerConfiguration.rulleJsonFileName = "rulle.json";
-        storyTailerConfiguration.oskarJsonFileName = "oskar.json";
-        storyTailerConfiguration.karlsonJsonFileName = "karlson.json";
-
-        storyTailerConfiguration.environmentJsonDirectory = "jsons/environments/";
-        storyTailerConfiguration.hallJsonFileName = "hall.json";
-        storyTailerConfiguration.underWindowJsonFileName = "underWindow.json";
-        storyTailerConfiguration.walletJsonFileName = "wallet.json";
-        storyTailerConfiguration.soupBownJsonFileName = "soupBowl.json";
-        storyTailerConfiguration.watchesJsonFileName = "watches.json";
-        storyTailerConfiguration.lampJsonFileName = "lamp.json";
-
-        return storyTailerConfiguration;
     }
 }

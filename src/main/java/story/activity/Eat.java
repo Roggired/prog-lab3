@@ -7,7 +7,7 @@ import story.pokemon.Pokemon;
 
 public class Eat implements IActivity{
     public static final String NAME = "съели";
-    private static final String REQUIRED_FEATURE = "можно съесть";
+    private static final String REQUIRED_FEATURE = "это можно съесть";
 
 
     @Override

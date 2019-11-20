@@ -15,6 +15,10 @@ public class Characteristic {
 
 
     public String getName() {
+        if (reason == null) {
+            return name;
+        }
+
         return name + ", " + reason.getDescription();
     }
 
