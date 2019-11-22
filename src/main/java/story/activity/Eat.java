@@ -1,8 +1,6 @@
 package story.activity;
 
 import story.activity.exception.ActivityException;
-import story.environment.Environment;
-import story.pokemon.Pokemon;
 
 public class Eat extends Activity{
     public static final String NAME = "съели";
@@ -15,12 +13,11 @@ public class Eat extends Activity{
     }
 
     @Override
-    public String executeFor(Pokemon pokemon,
-                             Environment... environments) throws ActivityException {
+    protected String appendExecutionResult(String result) throws ActivityException {
         checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
 
-        return pokemon.getName() + " "
-                + characteristic.getName()
-                + " съел " + environments[0].getName();
+        result += "съел " + environments[0].getName();
+
+        return result;
     }
 }

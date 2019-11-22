@@ -4,10 +4,10 @@ import story.activity.annotations.WithSingleObject;
 import story.activity.exception.ActivityException;
 
 @WithSingleObject
-public final class Grab extends Activity {
-    public static final String NAME = "схватить";
+public class HaveToAbort extends Activity {
+    public static final String NAME = "пришлось прервать";
 
-    private final String OBJECT_REQUIRED_FEATURE = "это можно схватить";
+    private final String OBJECT_REQUIRED_FEATURE = "это можно прервать";
 
 
     @Override
@@ -19,7 +19,7 @@ public final class Grab extends Activity {
     protected String appendExecutionResult(String result) throws ActivityException {
         checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
 
-        result += "схватил " + environments[0].getName();
+        result += "пришлось прервать" + " " + environments[0].getName();
 
         return result;
     }

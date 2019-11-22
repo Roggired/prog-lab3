@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class Environment {
-    private String name;
+    protected String name;
 
-    private List<Feature> features;
+    protected List<Feature> features;
 
-    private List<Characteristic> characteristics = new ArrayList<>();
+    protected List<Characteristic> characteristics = new ArrayList<>();
 
 
     public Environment() {}

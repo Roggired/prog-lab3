@@ -1,8 +1,5 @@
 package story.activity;
 
-import story.environment.Environment;
-import story.pokemon.Pokemon;
-
 public class HarryConfirm extends Activity {
     public static final String NAME = "поспешить подтвердить";
 
@@ -13,10 +10,9 @@ public class HarryConfirm extends Activity {
     }
 
     @Override
-    public String executeFor(Pokemon pokemon,
-                             Environment... environments) {
-        return pokemon.getName() + " "
-                + characteristic.getName()
-                + " поспешил подтвердить";
+    protected String appendExecutionResult(String result) {
+        result += "поспешил подтвердить";
+
+        return result;
     }
 }

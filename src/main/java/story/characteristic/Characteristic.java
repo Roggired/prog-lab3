@@ -1,6 +1,6 @@
 package story.characteristic;
 
-import story.characteristic.reason.Reason;
+import story.reason.Reason;
 
 import java.util.ArrayList;
 import java.util.List;

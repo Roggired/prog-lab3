@@ -2,8 +2,6 @@ package story.activity;
 
 import story.activity.annotations.WithSingleObject;
 import story.activity.exception.ActivityException;
-import story.environment.Environment;
-import story.pokemon.Pokemon;
 
 @WithSingleObject
 public final class Make extends Activity {
@@ -18,12 +16,11 @@ public final class Make extends Activity {
     }
 
     @Override
-    public String executeFor(Pokemon pokemon,
-                             Environment... environments) throws ActivityException {
+    protected String appendExecutionResult(String result) throws ActivityException {
         checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
 
-        return pokemon.getName() + " "
-                + characteristic.getName()
-                + " сделал " + environments[0].getName();
+        result += "сделал " + environments[0].getName();
+
+        return result;
     }
 }

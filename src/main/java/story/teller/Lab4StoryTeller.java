@@ -5,9 +5,10 @@ import com.google.inject.Injector;
 import story.activity.*;
 import story.activity.exception.ActivityException;
 import story.characteristic.Characteristic;
-import story.characteristic.reason.IReasonProducer;
-import story.characteristic.reason.Reason;
-import story.characteristic.reason.ReasonBasedOnActivity;
+import story.reason.IReasonProducer;
+import story.reason.Reason;
+import story.reason.ReasonBasedOnActivity;
+import story.reason.ReasonBasedOnCharacterisedActivity;
 import story.environment.Environment;
 import story.pokemon.Pokemon;
 
@@ -18,11 +19,14 @@ public class Lab4StoryTeller extends StoryTeller {
     private final String karlsonJsonFileName = "karlson.json",
                          frekenBokJsonFileName = "frekenBok.json",
                          uncleUliusJsonFileName = "uncleUlius.json",
-                         witchesJsonFileName = "witches.json";
+                         witchesJsonFileName = "witches.json",
+                         storyTellerJsonFileName = "storyTeller.json",
+                         browniesJsonFileName = "brownies.json";
 
     private final String bakeryKuroschenieJsonFileName = "bakeryKuroschenie.json",
                          frekenBokHandJsonFileName = "frekenBokHand.json",
-                         somethingJsonFileName = "something.json";
+                         somethingJsonFileName = "something.json",
+                         thoughtsJsonFileName = "thoughts.json";
 
 
     @Override
@@ -39,12 +43,19 @@ public class Lab4StoryTeller extends StoryTeller {
         Pokemon witches = createPokemonFromJSON(witchesJsonFileName,
                                                 objectMapper,
                                                 injector);
+        Pokemon storyTeller = createPokemonFromJSON(storyTellerJsonFileName,
+                                                    objectMapper,
+                                                    injector);
+        Pokemon brownies = createPokemonFromJSON(browniesJsonFileName,
+                                                 objectMapper,
+                                                 injector);
 
         Environment bakeryKuroschenie = createEnvironmentFromJSON(bakeryKuroschenieJsonFileName,
                                                                   objectMapper,
                                                                   injector);
         bakeryKuroschenie.addCharacteristic(new Characteristic("новое"));
         bakeryKuroschenie.addCharacteristic(new Characteristic("дьявольское"));
+
         Environment frekenBokHand = createEnvironmentFromJSON(frekenBokHandJsonFileName,
                                                               objectMapper,
                                                               injector);
@@ -52,29 +63,47 @@ public class Lab4StoryTeller extends StoryTeller {
                                                           objectMapper,
                                                           injector);
 
+        Environment thoughts = createEnvironmentFromJSON(thoughtsJsonFileName,
+                                                         objectMapper,
+                                                         injector);
+
         StringBuilder story = new StringBuilder("И теперь ");
         story.append(karlson.doActivity(Make.NAME, bakeryKuroschenie))
              .append(System.lineSeparator());
 
-        story.append(frekenBok.doActivity(NotUnderstand.NAME))
+        Characteristic characteristic = new Characteristic("этого и");
+        story.append(frekenBok.doActivity(NotUnderstand.NAME, characteristic))
              .append(System.lineSeparator());
 
-        story.append(uncleUnlius.doActivity(NotUnderstand.NAME))
+        characteristic = new Characteristic("тоже");
+        story.append(uncleUnlius.doActivity(NotUnderstand.NAME, characteristic))
              .append(System.lineSeparator());
 
-        story.append(uncleUnlius.doActivity(NotNotice.NAME, bakeryKuroschenie))
+        characteristic = new Characteristic("несмотря на всю его дъявольскую силу");
+        story.append(uncleUnlius.doActivity(NotNotice.NAME,
+                                            characteristic,
+                                            bakeryKuroschenie))
              .append(System.lineSeparator());
 
-        story.append(uncleUnlius.doActivity(Think.NAME, something))
+        characteristic = new Characteristic("а только все");
+        story.append(uncleUnlius.doActivity(Think.NAME,
+                                            characteristic,
+                                            something))
              .append(System.lineSeparator());
 
-        story.append(uncleUnlius.doActivity(Grab.NAME, frekenBokHand))
+        characteristic = new Characteristic("вдруг");
+        story.append(uncleUnlius.doActivity(Grab.NAME,
+                                            characteristic,
+                                            frekenBokHand))
              .append(System.lineSeparator());
 
-        story.append(uncleUnlius.doActivity(Squeeze.NAME, frekenBokHand))
+        characteristic = new Characteristic("крепко, словно прося о помощи");
+        story.append(uncleUnlius.doActivity(Squeeze.NAME,
+                                            characteristic,
+                                            frekenBokHand))
              .append(System.lineSeparator());
 
-        Characteristic characteristic = new Characteristic("широко");
+        characteristic = new Characteristic("широко");
         story.append(frekenBok.doActivity(OpenEyes.NAME,
                                           characteristic))
              .append(System.lineSeparator());
@@ -103,7 +132,23 @@ public class Lab4StoryTeller extends StoryTeller {
         story.append(witches.doActivity(Meet.NAME, characteristic))
              .append(System.lineSeparator());
 
+        story.append("A");
+        List<ReasonBasedOnCharacterisedActivity.ActivityNameCharacteristicPair> activityNameCharacteristicPairs =
+                new ArrayList<>();
+        characteristic = new Characteristic("как следует");
+        activityNameCharacteristicPairs.add(
+                new ReasonBasedOnCharacterisedActivity.ActivityNameCharacteristicPair(Think.NAME, characteristic));
+        reason = new ReasonBasedOnCharacterisedActivity(null,
+                                                        "если",
+                                                        activityNameCharacteristicPairs);
+        characteristic = new Characteristic("", reason);
+        story.append(storyTeller.doActivity(BecomeClear.NAME,
+                                            characteristic))
+                .append(System.lineSeparator());
 
+        story.append(" что ");
+        story.append(brownies.doActivity(Be.NAME))
+                .append(System.lineSeparator());
 
         return story.toString();
     }

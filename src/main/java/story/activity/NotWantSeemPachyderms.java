@@ -1,9 +1,5 @@
 package story.activity;
 
-import story.activity.exception.ActivityException;
-import story.environment.Environment;
-import story.pokemon.Pokemon;
-
 public class NotWantSeemPachyderms extends Activity {
     public static final String NAME = "не хотеть показаться толстокожим";
 
@@ -14,10 +10,9 @@ public class NotWantSeemPachyderms extends Activity {
     }
 
     @Override
-    public String executeFor(Pokemon pokemon,
-                             Environment... environments) {
-        return pokemon.getName() + " "
-                + characteristic.getName()
-                + " не хотел показаться толстокожим";
+    protected String appendExecutionResult(String result) {
+        result += "не хотел показаться толстокожим";
+
+        return result;
     }
 }

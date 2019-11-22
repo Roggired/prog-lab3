@@ -5,9 +5,9 @@ import com.google.inject.Injector;
 import story.activity.*;
 import story.activity.exception.ActivityException;
 import story.characteristic.Characteristic;
-import story.characteristic.reason.IReasonProducer;
-import story.characteristic.reason.Reason;
-import story.characteristic.reason.ReasonBasedOnActivity;
+import story.reason.IReasonProducer;
+import story.reason.Reason;
+import story.reason.ReasonBasedOnActivity;
 import story.environment.Environment;
 import story.pokemon.Pokemon;
 

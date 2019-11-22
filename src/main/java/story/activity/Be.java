@@ -1,8 +1,8 @@
 package story.activity;
 
+public class Be extends Activity {
+    public static final String NAME = "бывать";
 
-public final class OpenEyes extends Activity{
-    public static final String NAME = "раскрыть глаза";
 
     @Override
     public String getName() {
@@ -11,7 +11,7 @@ public final class OpenEyes extends Activity{
 
     @Override
     protected String appendExecutionResult(String result) {
-        result += "открыл глаза";
+        result += "бываeт";
 
         return result;
     }

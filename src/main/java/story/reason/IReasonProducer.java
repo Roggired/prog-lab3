@@ -1,4 +1,4 @@
-package story.characteristic.reason;
+package story.reason;
 
 public interface IReasonProducer {
     String getName();

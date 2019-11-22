@@ -1,8 +1,5 @@
 package story.activity;
 
-import story.environment.Environment;
-import story.pokemon.Pokemon;
-
 public class StayAlong extends Activity {
     public static final String NAME = "остаться одному";
 
@@ -13,33 +10,9 @@ public class StayAlong extends Activity {
     }
 
     @Override
-    public String executeFor(Pokemon pokemon,
-                             Environment... environments) {
-        return pokemon.getName() + " "
-                + characteristic.getName()
-                + " остался один";
-    }
+    protected String appendExecutionResult(String result) {
+        result += "остался один";
 
-    @Override
-    public boolean equals(Object object) {
-        if (object == null) {
-            return false;
-        }
-
-        if (!(object instanceof StayAlong)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return NAME.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().toString() + NAME;
+        return result;
     }
 }

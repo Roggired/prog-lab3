@@ -1,8 +1,6 @@
 package story.activity;
 
 import story.activity.annotations.WithSingleObject;
-import story.environment.Environment;
-import story.pokemon.Pokemon;
 
 @WithSingleObject
 public final class NotNotice extends Activity {
@@ -14,11 +12,9 @@ public final class NotNotice extends Activity {
     }
 
     @Override
-    public String executeFor(Pokemon pokemon,
-                             Environment... environments) {
+    protected String appendExecutionResult(String result) {
+        result += "не заметил " + environments[0].getName();
 
-        return pokemon.getName() + " "
-                + characteristic.getName() +
-                " не заметил " + environments[0].getName();
+        return result;
     }
 }

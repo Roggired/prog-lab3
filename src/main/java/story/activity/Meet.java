@@ -1,7 +1,5 @@
 package story.activity;
 
-import story.environment.Environment;
-import story.pokemon.Pokemon;
 
 public class Meet extends Activity {
     public static final String NAME = "встречаться";
@@ -13,10 +11,9 @@ public class Meet extends Activity {
     }
 
     @Override
-    public String executeFor(Pokemon pokemon,
-                             Environment... environments) {
-        return pokemon.getName() + " "
-                + characteristic.getName()
-                + " встречаться";
+    protected String appendExecutionResult(String result)  {
+        result += "встречаться";
+
+        return result;
     }
 }

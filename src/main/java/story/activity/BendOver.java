@@ -2,8 +2,6 @@ package story.activity;
 
 import story.activity.annotations.WithSingleObject;
 import story.activity.exception.ActivityException;
-import story.environment.Environment;
-import story.pokemon.Pokemon;
 
 @WithSingleObject
 public class BendOver extends Activity {
@@ -18,13 +16,11 @@ public class BendOver extends Activity {
     }
 
     @Override
-    public String executeFor(Pokemon pokemon,
-                             Environment... environments) throws ActivityException {
+    protected String appendExecutionResult(String result) throws ActivityException {
         checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
 
-        return pokemon.getName() + " "
-                + characteristic.getName()
-                + " наклонился к "
-                + environments[0].getName();
+        result += " наклонился к " + environments[0].getName();
+
+        return result;
     }
 }

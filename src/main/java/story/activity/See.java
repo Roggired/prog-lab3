@@ -1,8 +1,5 @@
 package story.activity;
 
-import story.environment.Environment;
-import story.pokemon.Pokemon;
-
 import java.util.Arrays;
 
 public class See extends Activity {
@@ -15,38 +12,16 @@ public class See extends Activity {
     }
 
     @Override
-    public String executeFor(Pokemon pokemon,
-                           Environment... environments) {
+    protected String appendExecutionResult(String result) {
         if (environments.length == 0) {
-            return pokemon.getName() + " "
-                    + characteristic.getName() + " ничего не увидел";
+            result += "ничего не увидел";
         }
 
-        StringBuilder stringBuilder = new StringBuilder(pokemon.getName() + " увидел: ");
+        StringBuilder stringBuilder = new StringBuilder("увидел: ");
         Arrays.asList(environments).forEach(environment -> stringBuilder.append(environment.getName()).append(" "));
-        return stringBuilder.toString();
-    }
 
-    @Override
-    public boolean equals(Object object) {
-        if (object == null) {
-            return false;
-        }
+        result += stringBuilder.toString().trim();
 
-        if (!(object instanceof See)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return NAME.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().toString() + NAME;
+        return result;
     }
 }

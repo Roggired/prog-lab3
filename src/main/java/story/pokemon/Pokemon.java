@@ -4,7 +4,7 @@ import story.activity.*;
 import story.activity.exception.*;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
-import story.characteristic.reason.IReasonProducer;
+import story.reason.IReasonProducer;
 import story.environment.Environment;
 import story.characteristic.Characteristic;
 import story.environment.feature.Feature;
@@ -15,7 +15,6 @@ import java.util.List;
 public class Pokemon extends Environment implements IReasonProducer {
     private String name;
     private List<Activity> activities;
-    private List<Characteristic> characteristics;
     private HealthySense healthySense;
 
 
@@ -27,22 +26,10 @@ public class Pokemon extends Environment implements IReasonProducer {
                    HealthySense healthySense) {
         super(name, features);
         this.name = name;
-        this.characteristics = characteristics;
         this.activities = activities;
         this.healthySense = healthySense;
-    }
 
-
-    @Override
-    public String getName() {
-        if (characteristics != null && !characteristics.isEmpty()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            characteristics.forEach(characteristic -> stringBuilder.append(characteristic.getName()).append(" "));
-
-            return stringBuilder.toString() + name;
-        }
-
-        return name;
+        characteristics.forEach(characteristic -> addCharacteristic(characteristic));
     }
 
     public String doActivity(String name,

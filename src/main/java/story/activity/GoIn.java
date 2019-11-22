@@ -1,9 +1,7 @@
 package story.activity;
 
 import story.activity.annotations.WithSingleObject;
-import story.activity.exception.NoFeatureException;
-import story.environment.Environment;
-import story.pokemon.Pokemon;
+import story.activity.exception.ActivityException;
 
 @WithSingleObject
 public class GoIn extends Activity {
@@ -17,35 +15,11 @@ public class GoIn extends Activity {
     }
 
     @Override
-    public String executeFor(Pokemon pokemon,
-                           Environment... environments) throws NoFeatureException {
+    protected String appendExecutionResult(String result) throws ActivityException {
         checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
 
-        return pokemon.getName() + " "
-                + characteristic.getName()
-                + " пошел в " + environments[0].getName();
-    }
+        result += "пошел в " + environments[0].getName();
 
-    @Override
-    public boolean equals(Object object) {
-        if (object == null) {
-            return false;
-        }
-
-        if (!(object instanceof GoIn)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return NAME.hashCode() + OBJECT_REQUIRED_FEATURE.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().toString() + NAME + OBJECT_REQUIRED_FEATURE;
+        return result;
     }
 }

@@ -1,6 +1,13 @@
 {
   "name": "дядя Юлиус",
-  "activitiesNames": ["NotNotice", "Think", "Grab", "Squeeze", "NotUnderstand", "BendOver", "LookIntoEyes"],
+  "activitiesNames": ["NotNotice",
+                      "Think",
+                      "Grab",
+                      "Squeeze",
+                      "NotUnderstand",
+                      "BendOver",
+                      "LookIntoEyes",
+                      "HaveToAbort"],
   "characteristicsStrings": [],
   "features": []
 }

@@ -1,4 +1,4 @@
-package story.characteristic.reason;
+package story.reason;
 
 
 import java.util.List;
@@ -17,19 +17,6 @@ public final class ReasonBasedOnActivity extends Reason {
     @Override
     public String getDescription() {
         return preposition + " " + createReasonProducersDescription() + " " + createActivitiesDescription();
-    }
-
-    private String createReasonProducersDescription() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int index = 0; index < reasonProducers.size(); index++) {
-            stringBuilder.append(reasonProducers.get(index).getName());
-
-            if (index != reasonProducers.size() - 1) {
-                stringBuilder.append(" и ");
-            }
-        }
-
-        return stringBuilder.toString();
     }
 
     private String createActivitiesDescription() {
