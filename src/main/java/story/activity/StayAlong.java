@@ -3,7 +3,7 @@ package story.activity;
 import story.environment.Environment;
 import story.pokemon.Pokemon;
 
-public class StayAlong implements IActivity {
+public class StayAlong extends Activity {
     public static final String NAME = "остаться одному";
 
 
@@ -14,8 +14,10 @@ public class StayAlong implements IActivity {
 
     @Override
     public String executeFor(Pokemon pokemon,
-                           Environment... environments) {
-        return pokemon.getName() + " остался один";
+                             Environment... environments) {
+        return pokemon.getName() + " "
+                + characteristic.getName()
+                + " остался один";
     }
 
     @Override

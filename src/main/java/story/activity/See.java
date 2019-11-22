@@ -5,7 +5,7 @@ import story.pokemon.Pokemon;
 
 import java.util.Arrays;
 
-public class See implements IActivity {
+public class See extends Activity {
     public static final String NAME = "увидеть";
 
 
@@ -18,7 +18,8 @@ public class See implements IActivity {
     public String executeFor(Pokemon pokemon,
                            Environment... environments) {
         if (environments.length == 0) {
-            return pokemon.getName() + " ничего не увидел";
+            return pokemon.getName() + " "
+                    + characteristic.getName() + " ничего не увидел";
         }
 
         StringBuilder stringBuilder = new StringBuilder(pokemon.getName() + " увидел: ");

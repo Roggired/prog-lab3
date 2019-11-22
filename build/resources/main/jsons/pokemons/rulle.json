@@ -1,5 +1,6 @@
 {
   "name": "Рулле",
   "activitiesNames": ["GoIn", "See", "Eat"],
-  "characteristicsStrings": []
+  "characteristicsStrings": [],
+  "features": []
 }

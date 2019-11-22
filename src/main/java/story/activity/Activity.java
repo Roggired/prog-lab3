@@ -2,34 +2,38 @@ package story.activity;
 
 import story.activity.exception.ActivityException;
 import story.activity.exception.NoFeatureException;
-import story.activity.exception.NotEnoughObjectsException;
+import story.characteristic.Characteristic;
 import story.environment.Environment;
 import story.pokemon.Pokemon;
 
 public abstract class Activity {
+    protected Characteristic characteristic;
+
+
+    public Activity() {
+        characteristic = new Characteristic("");
+    }
+
+    public void withCharacteristic(Characteristic characteristic) {
+        this.characteristic = characteristic;
+    }
+
     public abstract String getName();
 
     public abstract String executeFor(Pokemon pokemon,
                                       Environment ...environments) throws ActivityException;
 
 
-    protected void checkEnougthEnvironments(int requiredAmount,
-                                              Environment ...environments) throws NotEnoughObjectsException {
-        if (environments.length < requiredAmount) {
-            throw new NotEnoughObjectsException("недостаточно параметров");
-        }
-    }
-
     protected void checkObjectRequiredFeature(String requiredFeature,
                                                 Environment ...environments) throws NoFeatureException {
-        if (environments[0].haveFeature(requiredFeature)) {
+        if (!environments[0].haveFeature(requiredFeature)) {
             throw new NoFeatureException("объект активности не имеет необходимой фичи");
         }
     }
 
     protected void checkContainerRequiredFeature(String requiredFeature,
                                                    Environment ...environments) throws NoFeatureException {
-        if (environments[1].haveFeature(requiredFeature)) {
+        if (!environments[1].haveFeature(requiredFeature)) {
             throw new NoFeatureException("контайнер для объекта активности не имеет необходимой фичи");
         }
     }

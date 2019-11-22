@@ -6,10 +6,10 @@ import story.environment.Environment;
 import story.pokemon.Pokemon;
 
 @WithSingleObject
-public final class Make extends Activity {
-    public static final String NAME = "сделать";
+public class LookIntoEyes extends Activity {
+    public static final String NAME = "заглянуться в глаза";
 
-    private final String OBJECT_REQUIRED_FEATURE = "это можно сделать";
+    private final String OBJECT_REQUIRED_FEATURE = "этому можно заглянуть в глаза";
 
 
     @Override
@@ -24,6 +24,7 @@ public final class Make extends Activity {
 
         return pokemon.getName() + " "
                 + characteristic.getName()
-                + " сделал " + environments[0].getName();
+                + " заглянул в глаза "
+                + environments[0].getName();
     }
 }

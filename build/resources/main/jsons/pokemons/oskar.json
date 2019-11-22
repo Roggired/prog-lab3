@@ -1,5 +1,6 @@
 {
   "name": "Оскар",
   "activitiesNames": ["GoIn", "See", "Bore", "StayAlong", "Eat"],
-  "characteristicsStrings": ["бедный"]
+  "characteristicsStrings": ["бедный"],
+  "features": []
 }

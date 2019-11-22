@@ -3,7 +3,7 @@ package story.activity;
 import story.environment.Environment;
 import story.pokemon.Pokemon;
 
-public class Bore implements IActivity {
+public class Bore extends Activity {
     public static final String NAME = "скучать";
 
 
@@ -14,8 +14,10 @@ public class Bore implements IActivity {
 
     @Override
     public String executeFor(Pokemon pokemon,
-                           Environment... environments) {
-        return pokemon.getName() + " заскучал";
+                             Environment... environments) {
+        return pokemon.getName() + " "
+                + characteristic.getName()
+                + " заскучал";
     }
 
     @Override

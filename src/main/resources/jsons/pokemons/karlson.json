@@ -1,5 +1,6 @@
 {
   "name": "Карлсон",
-  "activitiesNames": ["GoOver", "PutIn", "AttachTo"],
-  "characteristicsStrings": []
+  "activitiesNames": ["GoOver", "PutIn", "AttachTo", "Make"],
+  "characteristicsStrings": [],
+  "features": []
 }

@@ -7,7 +7,7 @@ import story.environment.Environment;
 import story.pokemon.Pokemon;
 
 @WithTwoObject
-public class AttachTo implements IActivity {
+public class AttachTo extends Activity {
     public static final String NAME = "прикрепить к";
     private static final String OBJECT_REQUIRED_FEATURE = "это можно прикрепить";
     private static final String CONTAINER_REQUIRED_FEATURE = "к этому можно прикрепить";
@@ -21,15 +21,14 @@ public class AttachTo implements IActivity {
     @Override
     public String executeFor(Pokemon pokemon,
                            Environment... environments) throws ActivityException {
-        if (!environments[0].haveFeature(OBJECT_REQUIRED_FEATURE)) {
-            throw new NoFeatureException("Нельзя прикрепить то, что нельзя");
-        }
+        checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
+        checkContainerRequiredFeature(CONTAINER_REQUIRED_FEATURE, environments);
 
-        if (!environments[1].haveFeature(CONTAINER_REQUIRED_FEATURE)) {
-            throw new NoFeatureException("Нельзя прикрепить к тому, к чему нельзя");
-        }
-
-        return pokemon.getName() + " прикрепил " + environments[0].getName() + " к " + environments[1].getName();
+        return pokemon.getName() + " "
+                + characteristic.getName()
+                + " прикрепил "
+                + environments[0].getName()
+                + " к " + environments[1].getName();
     }
 
     @Override

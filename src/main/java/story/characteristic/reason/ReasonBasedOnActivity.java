@@ -1,28 +1,30 @@
 package story.characteristic.reason;
 
+
 import java.util.List;
 
 public final class ReasonBasedOnActivity extends Reason {
     private List<String> activityNames;
 
 
-    public ReasonBasedOnActivity(List<IReasonProducer> reasonSupliers,
+    public ReasonBasedOnActivity(List<IReasonProducer> reasonProducers,
+                                 String preposition,
                                  List<String> activityNames) {
-        super(reasonSupliers);
+        super(reasonProducers, preposition);
         this.activityNames = activityNames;
     }
 
     @Override
     public String getDescription() {
-        return "потому что " + createReasonSupliersDescription() + " " + createActivitiesDescription();
+        return preposition + " " + createReasonProducersDescription() + " " + createActivitiesDescription();
     }
 
-    private String createReasonSupliersDescription() {
+    private String createReasonProducersDescription() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int index = 0; index < reasonSupliers.size(); index++) {
-            stringBuilder.append(reasonSupliers.get(index).getName());
+        for (int index = 0; index < reasonProducers.size(); index++) {
+            stringBuilder.append(reasonProducers.get(index).getName());
 
-            if (index != reasonSupliers.size() - 1) {
+            if (index != reasonProducers.size() - 1) {
                 stringBuilder.append(" и ");
             }
         }
@@ -31,7 +33,7 @@ public final class ReasonBasedOnActivity extends Reason {
     }
 
     private String createActivitiesDescription() {
-        StringBuilder stringBuilder = new StringBuilder("выполнили");
+        StringBuilder stringBuilder = new StringBuilder();
         for (int index = 0; index < activityNames.size(); index++) {
             stringBuilder.append(activityNames.get(index));
 

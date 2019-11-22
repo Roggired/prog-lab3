@@ -74,9 +74,10 @@ public final class Lab3StoryTeller extends StoryTeller {
                 .append(System.lineSeparator());
         result.append(oskar.doActivity(Bore.NAME))
                 .append(System.lineSeparator());
-        result.append(oskar.doActivityBecause("Чтобы посмотреть, что делают его новые друзья",
-                GoIn.NAME,
-                hall))
+        Characteristic characteristic = new Characteristic("Чтобы посмотреть, что делают его новые друзья");
+        result.append(oskar.doActivity(GoIn.NAME,
+                                       characteristic,
+                                       hall))
                 .append(System.lineSeparator());
         result.append(karlson.doActivity(GoOver.NAME, underWindow))
                 .append(System.lineSeparator());
@@ -94,30 +95,33 @@ public final class Lab3StoryTeller extends StoryTeller {
 
         List<String> activityNames = new ArrayList<>();
         activityNames.add(Eat.NAME);
-        Reason reason = new ReasonBasedOnActivity(reasonProducers, activityNames);
-        Characteristic characteristic = new Characteristic("сухой", reason);
+        Reason reason = new ReasonBasedOnActivity(reasonProducers,
+                                                  "потому что",
+                                                  activityNames);
+        characteristic = new Characteristic("сухой", reason);
         wallet.addCharacteristic(characteristic);
 
-        result.append(wallet.getNameWithCharacteristics())
+        result.append(wallet.getName())
                 .append(System.lineSeparator());
         result.append(karlson.doActivity(AttachTo.NAME, watches, lamp))
                 .append(System.lineSeparator());
 
-        watches.addCharacteristic(new Characteristic("висели на виду, слегка раскачиваясь", null));
+        watches.addCharacteristic(new Characteristic("висели на виду, слегка раскачиваясь"));
 
-        result.append(watches.getNameWithCharacteristics())
+        result.append(watches.getName())
                 .append(System.lineSeparator());
-        result.append(fille.doActivityBecause("Когда вернулся в комнату",
-                See.NAME,
-                watches))
+        characteristic = new Characteristic("Когда вернулся в комнату");
+        result.append(fille.doActivity(See.NAME,
+                                       characteristic,
+                                       watches))
                 .append(System.lineSeparator());
-        result.append(rulle.doActivityBecause("Когда вернулся в комнату",
-                See.NAME,
-                watches))
+        result.append(rulle.doActivity(See.NAME,
+                                       characteristic,
+                                       watches))
                 .append(System.lineSeparator());
-        result.append(oskar.doActivityBecause("Когда вернулся в комнату",
-                See.NAME,
-                watches))
+        result.append(oskar.doActivity(See.NAME,
+                                       characteristic,
+                                       watches))
                 .append(System.lineSeparator());
 
         result.append(System.lineSeparator());

@@ -1,6 +1,6 @@
 package story.pokemon.healthySense;
 
-import story.activity.IActivity;
+import story.activity.Activity;
 import story.activity.annotations.WithSingleObject;
 import story.activity.annotations.WithTwoObject;
 import story.activity.exception.ActivityException;
@@ -10,12 +10,12 @@ import story.activity.exception.TooManyObjectsException;
 import story.environment.Environment;
 
 public class HealthySense {
-    public void checkEnvironmentForActivity(IActivity activity,
+    public void checkEnvironmentForActivity(Activity activity,
                                             Environment...environments) throws ActivityException {
         checkWithSingleObjectActivity(activity, environments);
         checkWithTwoObjectActivity(activity, environments);
     }
-    private void checkWithSingleObjectActivity(IActivity activity, Environment ...environments) throws ActivityException {
+    private void checkWithSingleObjectActivity(Activity activity, Environment ...environments) throws ActivityException {
         Object object = activity.getClass().getAnnotation(WithSingleObject.class);
         if (object != null) {
             if (environments.length == 0) {
@@ -27,7 +27,7 @@ public class HealthySense {
             }
         }
     }
-    private void checkWithTwoObjectActivity(IActivity activity, Environment... environments) throws ActivityException {
+    private void checkWithTwoObjectActivity(Activity activity, Environment... environments) throws ActivityException {
         Object object = activity.getClass().getAnnotation(WithTwoObject.class);
         if (object != null) {
             if (environments.length == 0) {

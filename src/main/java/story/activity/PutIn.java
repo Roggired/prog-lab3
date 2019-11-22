@@ -7,7 +7,7 @@ import story.environment.Environment;
 import story.pokemon.Pokemon;
 
 @WithTwoObject
-public class PutIn implements IActivity {
+public class PutIn extends Activity {
     public static final String NAME = "положить в";
     private static final String OBJECT_REQUIRED_FEATURE = "это можно положить";
     private static final String CONTAINER_REQUIRED_FEATURE = "в это можно положить";
@@ -21,15 +21,14 @@ public class PutIn implements IActivity {
     @Override
     public String executeFor(Pokemon pokemon,
                            Environment... environments) throws ActivityException {
-        if (!environments[0].haveFeature(OBJECT_REQUIRED_FEATURE)) {
-            throw new NoFeatureException("Нельзя положить то, что нельзя");
-        }
+        checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
+        checkContainerRequiredFeature(CONTAINER_REQUIRED_FEATURE, environments);
 
-        if (!environments[1].haveFeature(CONTAINER_REQUIRED_FEATURE)) {
-            throw new NoFeatureException("Нельзя положить в то, во что нельзя");
-        }
-
-        return pokemon.getName() + " положил " + environments[0].getName() + " в " + environments[1].getName();
+        return pokemon.getName() + " "
+                + characteristic.getName()
+                + " положил "
+                + environments[0].getName()
+                + " в " + environments[1].getName();
     }
 
     @Override

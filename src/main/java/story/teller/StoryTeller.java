@@ -34,9 +34,12 @@ public abstract class StoryTeller {
         IPokemonFactory pokemonFactory = injector.getInstance(IPokemonFactory.class);
 
         List<Characteristic> characteristics = new ArrayList<>();
-        dtoPokemon.characteristicsStrings.forEach(string -> characteristics.add(new Characteristic(string, null)));
+        dtoPokemon.characteristicsStrings.forEach(string -> characteristics.add(new Characteristic(string)));
 
-        return pokemonFactory.create(dtoPokemon.name, characteristics, activityFactory.create(dtoPokemon.activitiesNames));
+        return pokemonFactory.create(dtoPokemon.name,
+                                     characteristics,
+                                     activityFactory.create(dtoPokemon.activitiesNames),
+                                     dtoPokemon.features);
     }
 
     protected Environment createEnvironmentFromJSON(String fileName,

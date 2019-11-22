@@ -1,5 +1,6 @@
 {
   "name": "Филле",
   "activitiesNames": ["GoIn", "See", "Eat"],
-  "characteristicsStrings": []
+  "characteristicsStrings": [],
+  "features": []
 }

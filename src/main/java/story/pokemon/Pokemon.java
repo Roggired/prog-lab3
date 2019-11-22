@@ -7,22 +7,25 @@ import com.google.inject.assistedinject.AssistedInject;
 import story.characteristic.reason.IReasonProducer;
 import story.environment.Environment;
 import story.characteristic.Characteristic;
+import story.environment.feature.Feature;
 import story.pokemon.healthySense.HealthySense;
 
 import java.util.List;
 
-public class Pokemon implements IReasonProducer {
+public class Pokemon extends Environment implements IReasonProducer {
     private String name;
-    private List<IActivity> activities;
+    private List<Activity> activities;
     private List<Characteristic> characteristics;
     private HealthySense healthySense;
 
 
     @AssistedInject
     public Pokemon(@Assisted String name,
-                   @Assisted List<IActivity> activities,
+                   @Assisted List<Activity> activities,
                    @Assisted List<Characteristic> characteristics,
+                   @Assisted List<Feature> features,
                    HealthySense healthySense) {
+        super(name, features);
         this.name = name;
         this.characteristics = characteristics;
         this.activities = activities;
@@ -43,12 +46,12 @@ public class Pokemon implements IReasonProducer {
     }
 
     public String doActivity(String name,
-                           Environment ...environments) throws ActivityException {
+                             Environment ...environments) throws ActivityException {
         if (!canActivity(name)) {
             throw new CannotActivityException(createCannotActivityExceptionText(name));
         }
 
-        for (IActivity activity: activities) {
+        for (Activity activity: activities) {
             if (activity.getName().equals(name)) {
                 healthySense.checkEnvironmentForActivity(activity, environments);
                 return activity.executeFor(this, environments);
@@ -57,13 +60,27 @@ public class Pokemon implements IReasonProducer {
 
         return null;
     }
-    public String doActivityBecause(String cause,
-                                  String name,
-                                  Environment ...environments) throws ActivityException {
-        return doActivity(name, environments) + " " + cause;
+
+    public String doActivity(String name,
+                             Characteristic activityCharacteristic,
+                             Environment ... environments) throws ActivityException {
+        if (!canActivity(name)) {
+            throw new CannotActivityException(createCannotActivityExceptionText(name));
+        }
+
+        for (Activity activity: activities) {
+            if (activity.getName().equals(name)) {
+                healthySense.checkEnvironmentForActivity(activity, environments);
+                activity.withCharacteristic(activityCharacteristic);
+                return activity.executeFor(this, environments);
+            }
+        }
+
+        return null;
     }
+
     private boolean canActivity(String name) {
-        for (IActivity activity : activities) {
+        for (Activity activity : activities) {
             if (activity.getName().equals(name)) {
                 return true;
             }
@@ -103,8 +120,8 @@ public class Pokemon implements IReasonProducer {
         return determinant.isEqualList(characteristics, this.characteristics);
     }
 
-    private boolean isEqualActivities(List<IActivity> activities) {
-        ListContainsDeterminant<IActivity> determinant = new ListContainsDeterminant<>();
+    private boolean isEqualActivities(List<Activity> activities) {
+        ListContainsDeterminant<Activity> determinant = new ListContainsDeterminant<>();
         return determinant.isEqualList(activities, this.activities);
     }
 
@@ -139,7 +156,7 @@ public class Pokemon implements IReasonProducer {
             hashCode += characteristic.hashCode();
         }
 
-        for (IActivity activity : activities) {
+        for (Activity activity : activities) {
             hashCode += activity.hashCode();
         }
 
@@ -154,7 +171,7 @@ public class Pokemon implements IReasonProducer {
             string.append(characteristic.toString());
         }
 
-        for (IActivity activity : activities) {
+        for (Activity activity : activities) {
             string.append(activity.toString());
         }
 

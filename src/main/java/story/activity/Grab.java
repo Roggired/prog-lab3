@@ -6,10 +6,10 @@ import story.environment.Environment;
 import story.pokemon.Pokemon;
 
 @WithSingleObject
-public final class Make extends Activity {
-    public static final String NAME = "сделать";
+public final class Grab extends Activity {
+    public static final String NAME = "схватить";
 
-    private final String OBJECT_REQUIRED_FEATURE = "это можно сделать";
+    private final String OBJECT_REQUIRED_FEATURE = "это можно схватить";
 
 
     @Override
@@ -24,6 +24,6 @@ public final class Make extends Activity {
 
         return pokemon.getName() + " "
                 + characteristic.getName()
-                + " сделал " + environments[0].getName();
+                + " схватил " + environments[0].getName();
     }
 }

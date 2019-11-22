@@ -11,10 +11,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Environment {
-    @JsonProperty
     private String name;
 
-    @JsonProperty
     private List<Feature> features;
 
     private List<Characteristic> characteristics = new ArrayList<>();
@@ -46,11 +44,7 @@ public class Environment {
         return false;
     }
 
-
     public String getName() {
-        return name;
-    }
-    public String getNameWithCharacteristics() {
         if (characteristics != null && !characteristics.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             characteristics.forEach(characteristic -> stringBuilder.append(characteristic.getName()).append(" "));

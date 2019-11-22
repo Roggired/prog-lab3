@@ -1,9 +1,9 @@
 package story.activity.factory;
 
-import story.activity.IActivity;
+import story.activity.Activity;
 
 import java.util.List;
 
 public interface IActivityFactory {
-    List<IActivity> create(List<String> activitiesNames);
+    List<Activity> create(List<String> activitiesNames);
 }

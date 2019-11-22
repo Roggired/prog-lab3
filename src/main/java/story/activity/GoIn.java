@@ -6,9 +6,9 @@ import story.environment.Environment;
 import story.pokemon.Pokemon;
 
 @WithSingleObject
-public class GoIn implements IActivity {
+public class GoIn extends Activity {
     public static final String NAME = "идти в";
-    private static final String REQUIRED_FEATURE = "можно идти";
+    private static final String OBJECT_REQUIRED_FEATURE = "можно идти";
 
 
     @Override
@@ -19,11 +19,11 @@ public class GoIn implements IActivity {
     @Override
     public String executeFor(Pokemon pokemon,
                            Environment... environments) throws NoFeatureException {
-        if (!environments[0].haveFeature(REQUIRED_FEATURE)) {
-            throw new NoFeatureException("нельзя идти туда, куда нельзя идти");
-        }
+        checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
 
-        return pokemon.getName() + " пошел в " + environments[0].getName();
+        return pokemon.getName() + " "
+                + characteristic.getName()
+                + " пошел в " + environments[0].getName();
     }
 
     @Override
@@ -41,11 +41,11 @@ public class GoIn implements IActivity {
 
     @Override
     public int hashCode() {
-        return NAME.hashCode() + REQUIRED_FEATURE.hashCode();
+        return NAME.hashCode() + OBJECT_REQUIRED_FEATURE.hashCode();
     }
 
     @Override
     public String toString() {
-        return this.getClass().toString() + NAME + REQUIRED_FEATURE;
+        return this.getClass().toString() + NAME + OBJECT_REQUIRED_FEATURE;
     }
 }
