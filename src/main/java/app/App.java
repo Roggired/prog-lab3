@@ -1,5 +1,6 @@
 package app;
 
+import app.injector.Lab3Module;
 import app.injector.Lab4Module;
 import story.teller.StoryTeller;
 import story.activity.exception.*;

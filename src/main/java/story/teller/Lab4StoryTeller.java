@@ -37,7 +37,7 @@ public class Lab4StoryTeller extends StoryTeller {
         Pokemon frekenBok = createPokemonFromJSON(frekenBokJsonFileName,
                                                   objectMapper,
                                                   injector);
-        Pokemon uncleUnlius = createPokemonFromJSON(uncleUliusJsonFileName,
+        Pokemon uncleUlius = createPokemonFromJSON(uncleUliusJsonFileName,
                                                     objectMapper,
                                                     injector);
         Pokemon witches = createPokemonFromJSON(witchesJsonFileName,
@@ -68,50 +68,56 @@ public class Lab4StoryTeller extends StoryTeller {
                                                          injector);
 
         StringBuilder story = new StringBuilder("И теперь ");
-        story.append(karlson.doActivity(Make.NAME, bakeryKuroschenie))
+
+        karlson.withEnvironments(bakeryKuroschenie);
+        story.append(karlson.doActivity(Make.NAME))
              .append(System.lineSeparator());
 
         Characteristic characteristic = new Characteristic("этого и");
-        story.append(frekenBok.doActivity(NotUnderstand.NAME, characteristic))
+        frekenBok.withCharacteristic(characteristic);
+        story.append(frekenBok.doActivity(NotUnderstand.NAME))
              .append(System.lineSeparator());
 
         characteristic = new Characteristic("тоже");
-        story.append(uncleUnlius.doActivity(NotUnderstand.NAME, characteristic))
+        uncleUlius.withCharacteristic(characteristic);
+        story.append(uncleUlius.doActivity(NotUnderstand.NAME))
              .append(System.lineSeparator());
 
         characteristic = new Characteristic("несмотря на всю его дъявольскую силу");
-        story.append(uncleUnlius.doActivity(NotNotice.NAME,
-                                            characteristic,
-                                            bakeryKuroschenie))
+        uncleUlius.withCharacteristic(characteristic);
+        uncleUlius.withEnvironments(bakeryKuroschenie);
+        story.append(uncleUlius.doActivity(NotNotice.NAME))
              .append(System.lineSeparator());
 
         characteristic = new Characteristic("а только все");
-        story.append(uncleUnlius.doActivity(Think.NAME,
-                                            characteristic,
-                                            something))
+        uncleUlius.withCharacteristic(characteristic);
+        uncleUlius.withEnvironments(something);
+        story.append(uncleUlius.doActivity(Think.NAME))
              .append(System.lineSeparator());
 
         characteristic = new Characteristic("вдруг");
-        story.append(uncleUnlius.doActivity(Grab.NAME,
-                                            characteristic,
-                                            frekenBokHand))
+        uncleUlius.withCharacteristic(characteristic);
+        uncleUlius.withEnvironments(frekenBokHand);
+        story.append(uncleUlius.doActivity(Grab.NAME))
              .append(System.lineSeparator());
 
         characteristic = new Characteristic("крепко, словно прося о помощи");
-        story.append(uncleUnlius.doActivity(Squeeze.NAME,
-                                            characteristic,
-                                            frekenBokHand))
+        uncleUlius.withCharacteristic(characteristic);
+        uncleUlius.withEnvironments(frekenBokHand);
+        story.append(uncleUlius.doActivity(Squeeze.NAME))
              .append(System.lineSeparator());
 
         characteristic = new Characteristic("широко");
-        story.append(frekenBok.doActivity(OpenEyes.NAME,
-                                          characteristic))
+        frekenBok.withCharacteristic(characteristic);
+        story.append(frekenBok.doActivity(OpenEyes.NAME))
              .append(System.lineSeparator());
 
-        story.append(uncleUnlius.doActivity(BendOver.NAME, frekenBok))
+        uncleUlius.withEnvironments(frekenBok);
+        story.append(uncleUlius.doActivity(BendOver.NAME))
              .append(System.lineSeparator());
 
-        story.append(uncleUnlius.doActivity(LookIntoEyes.NAME, frekenBok))
+        uncleUlius.withEnvironments(frekenBok);
+        story.append(uncleUlius.doActivity(LookIntoEyes.NAME))
              .append(System.lineSeparator());
 
 
@@ -124,12 +130,14 @@ public class Lab4StoryTeller extends StoryTeller {
                                                   activityNames);
         characteristic = new Characteristic("никак", reason);
 
-        story.append(frekenBok.doActivity(HarryConfirm.NAME, characteristic))
+        frekenBok.withCharacteristic(characteristic);
+        story.append(frekenBok.doActivity(HarryConfirm.NAME))
              .append(System.lineSeparator());
 
         story.append(" что ");
         characteristic = new Characteristic("куда чаще, чем предполагаешь");
-        story.append(witches.doActivity(Meet.NAME, characteristic))
+        witches.withCharacteristic(characteristic);
+        story.append(witches.doActivity(Meet.NAME))
              .append(System.lineSeparator());
 
         story.append("A");
@@ -142,14 +150,18 @@ public class Lab4StoryTeller extends StoryTeller {
                                                         "если",
                                                         activityNameCharacteristicPairs);
         characteristic = new Characteristic("", reason);
-        story.append(storyTeller.doActivity(BecomeClear.NAME,
-                                            characteristic))
+        storyTeller.withCharacteristic(characteristic);
+        story.append(storyTeller.doActivity(BecomeClear.NAME))
                 .append(System.lineSeparator());
 
         story.append(" что ");
         story.append(brownies.doActivity(Be.NAME))
                 .append(System.lineSeparator());
 
+        story.append("Но ");
+        characteristic = new Characteristic("тут");
+        reasonProducers = new ArrayList<>();
+        reasonProducers.add(uncleUlius);
         return story.toString();
     }
 }

@@ -53,7 +53,7 @@ public abstract class Activity {
     }
 
     protected String appendPokemonName(String result) {
-        return result + pokemon.getName();
+        return result + pokemon.getName() + " ";
     }
     protected String appendCharacteristic(String result) {
         if (characteristic == null) {

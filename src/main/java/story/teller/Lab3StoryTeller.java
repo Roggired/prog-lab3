@@ -66,33 +66,49 @@ public final class Lab3StoryTeller extends StoryTeller {
                                                      injector);
 
         StringBuilder result = new StringBuilder();
-        result.append(fille.doActivity(GoIn.NAME, hall))
-                .append(System.lineSeparator());
-        result.append(rulle.doActivity(GoIn.NAME, hall))
-                .append(System.lineSeparator());
-        result.append(oskar.doActivity(StayAlong.NAME))
-                .append(System.lineSeparator());
-        result.append(oskar.doActivity(Bore.NAME))
-                .append(System.lineSeparator());
-        Characteristic characteristic = new Characteristic("Чтобы посмотреть, что делают его новые друзья");
-        result.append(oskar.doActivity(GoIn.NAME,
-                                       characteristic,
-                                       hall))
-                .append(System.lineSeparator());
-        result.append(karlson.doActivity(GoOver.NAME, underWindow))
-                .append(System.lineSeparator());
-        result.append(karlson.doActivity(PutIn.NAME, wallet, soupBowl))
+
+        fille.withEnvironments(hall);
+        result.append(fille.doActivity(GoIn.NAME))
                 .append(System.lineSeparator());
 
-        fille.doActivity(Eat.NAME, soup);
-        rulle.doActivity(Eat.NAME, soup);
-        oskar.doActivity(Eat.NAME, soup);
+        rulle.withEnvironments(hall);
+        result.append(rulle.doActivity(GoIn.NAME))
+                .append(System.lineSeparator());
+
+        result.append(oskar.doActivity(StayAlong.NAME))
+                .append(System.lineSeparator());
+
+        result.append(oskar.doActivity(Bore.NAME))
+                .append(System.lineSeparator());
+
+        Characteristic characteristic = new Characteristic("Чтобы посмотреть, что делают его новые друзья");
+        oskar.withCharacteristic(characteristic);
+        oskar.withEnvironments(hall);
+        result.append(oskar.doActivity(GoIn.NAME))
+                .append(System.lineSeparator());
+
+        karlson.withEnvironments(underWindow);
+        result.append(karlson.doActivity(GoOver.NAME))
+                .append(System.lineSeparator());
+
+        karlson.withEnvironments(wallet, soupBowl);
+        result.append(karlson.doActivity(PutIn.NAME))
+                .append(System.lineSeparator());
+
+        fille.withEnvironments(soup);
+        fille.doActivity(Eat.NAME);
+
+        rulle.withEnvironments(soup);
+        rulle.doActivity(Eat.NAME);
+
+        oskar.withEnvironments(soup);
+        oskar.doActivity(Eat.NAME);
+
 
         List<IReasonProducer> reasonProducers = new ArrayList<>();
         reasonProducers.add(fille);
         reasonProducers.add(rulle);
         reasonProducers.add(oskar);
-
         List<String> activityNames = new ArrayList<>();
         activityNames.add(Eat.NAME);
         Reason reason = new ReasonBasedOnActivity(reasonProducers,
@@ -100,28 +116,36 @@ public final class Lab3StoryTeller extends StoryTeller {
                                                   activityNames);
         characteristic = new Characteristic("сухой", reason);
         wallet.addCharacteristic(characteristic);
-
         result.append(wallet.getName())
                 .append(System.lineSeparator());
-        result.append(karlson.doActivity(AttachTo.NAME, watches, lamp))
+
+
+        karlson.withEnvironments(watches, lamp);
+        result.append(karlson.doActivity(AttachTo.NAME))
                 .append(System.lineSeparator());
+
 
         watches.addCharacteristic(new Characteristic("висели на виду, слегка раскачиваясь"));
 
         result.append(watches.getName())
                 .append(System.lineSeparator());
-        characteristic = new Characteristic("Когда вернулся в комнату");
-        result.append(fille.doActivity(See.NAME,
-                                       characteristic,
-                                       watches))
+
+
+        characteristic = new Characteristic("когда вернулся в комнату");
+
+        fille.withCharacteristic(characteristic);
+        fille.withEnvironments(watches);
+        result.append(fille.doActivity(See.NAME))
                 .append(System.lineSeparator());
-        result.append(rulle.doActivity(See.NAME,
-                                       characteristic,
-                                       watches))
+
+        rulle.withCharacteristic(characteristic);
+        rulle.withEnvironments(watches);
+        result.append(rulle.doActivity(See.NAME))
                 .append(System.lineSeparator());
-        result.append(oskar.doActivity(See.NAME,
-                                       characteristic,
-                                       watches))
+
+        oskar.withCharacteristic(characteristic);
+        oskar.withEnvironments(watches);
+        result.append(oskar.doActivity(See.NAME))
                 .append(System.lineSeparator());
 
         result.append(System.lineSeparator());

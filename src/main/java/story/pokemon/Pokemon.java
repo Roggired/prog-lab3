@@ -9,6 +9,7 @@ import story.environment.Environment;
 import story.characteristic.Characteristic;
 import story.environment.feature.Feature;
 import story.pokemon.healthySense.HealthySense;
+import story.reason.Reason;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class Pokemon extends Environment implements IReasonProducer {
     private String name;
     private List<Activity> activities;
     private HealthySense healthySense;
+
+    private Doer doer = new Doer();
 
 
     @AssistedInject
@@ -32,7 +35,35 @@ public class Pokemon extends Environment implements IReasonProducer {
         characteristics.forEach(characteristic -> addCharacteristic(characteristic));
     }
 
-    public String doActivity(String name,
+    public void withCharacteristic(Characteristic characteristic) {
+        doer.characteristic = characteristic;
+    }
+    public void withReasons(String reasonPreposition, List<Reason> reasons) {
+        doer.reasonPreposition = reasonPreposition;
+        doer.reasons = reasons;
+    }
+    public void withEnvironments(Environment ...environments) {
+        doer.environments = environments;
+    }
+
+    public String doActivity(String activityName) throws ActivityException {
+        Activity activity = findActivity(activityName);
+
+        if (activity == null) {
+            throw new CannotActivityException(createCannotActivityExceptionText(activityName));
+        }
+
+        activity.withCharacteristic(doer.characteristic);
+        activity.withReasons(doer.reasonPreposition, doer.reasons);
+
+        healthySense.checkEnvironmentForActivity(activity, doer.environments);
+
+        String result = activity.executeFor(this, doer.environments);
+
+        doer = new Doer();
+        return result;
+    }
+    /*public String doActivity(String name,
                              Environment ...environments) throws ActivityException {
         if (!canActivity(name)) {
             throw new CannotActivityException(createCannotActivityExceptionText(name));
@@ -64,16 +95,16 @@ public class Pokemon extends Environment implements IReasonProducer {
         }
 
         return null;
-    }
+    }*/
 
-    private boolean canActivity(String name) {
-        for (Activity activity : activities) {
+    private Activity findActivity(String name) {
+        for (Activity activity: activities) {
             if (activity.getName().equals(name)) {
-                return true;
+                return activity;
             }
         }
 
-        return false;
+        return null;
     }
     private String createCannotActivityExceptionText(String activityName) {
         return this.getClass() + " " + this.name + ": 'I cannot do " + activityName + "!'";
@@ -112,29 +143,6 @@ public class Pokemon extends Environment implements IReasonProducer {
         return determinant.isEqualList(activities, this.activities);
     }
 
-
-    private static class ListContainsDeterminant<T> {
-        boolean isEqualList(List<T> listA, List<T> listB) {
-            for (T objectA : listA) {
-                boolean isContained = false;
-
-                for (T objectB : listB) {
-                    if (objectA.equals(objectB)) {
-                        isContained = true;
-                        break;
-                    }
-                }
-
-                if (!isContained) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    }
-
-
     @Override
     public int hashCode() {
         int hashCode = name.hashCode();
@@ -163,5 +171,35 @@ public class Pokemon extends Environment implements IReasonProducer {
         }
 
         return string.toString();
+    }
+
+
+
+    private static class ListContainsDeterminant<T> {
+        boolean isEqualList(List<T> listA, List<T> listB) {
+            for (T objectA : listA) {
+                boolean isContained = false;
+
+                for (T objectB : listB) {
+                    if (objectA.equals(objectB)) {
+                        isContained = true;
+                        break;
+                    }
+                }
+
+                if (!isContained) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    private class Doer {
+        private Environment[] environments;
+        private Characteristic characteristic;
+        private String reasonPreposition;
+        private List<Reason> reasons;
     }
 }
