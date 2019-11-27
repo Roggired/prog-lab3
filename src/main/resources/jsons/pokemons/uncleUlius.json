@@ -7,7 +7,9 @@
                       "NotUnderstand",
                       "BendOver",
                       "LookIntoEyes",
-                      "HaveToAbort"],
+                      "HaveToAbort",
+                      "TimeToGo",
+                      "Agreed"],
   "characteristicsStrings": [],
   "features": []
 }

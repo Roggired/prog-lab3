@@ -159,9 +159,44 @@ public class Lab4StoryTeller extends StoryTeller {
                 .append(System.lineSeparator());
 
         story.append("Но ");
-        characteristic = new Characteristic("тут");
+        List<Reason> reasons = new ArrayList<>();
+
         reasonProducers = new ArrayList<>();
         reasonProducers.add(uncleUlius);
+        characteristic = new Characteristic("заранее");
+        activityNameCharacteristicPairs = new ArrayList<>();
+        activityNameCharacteristicPairs.add(
+                new ReasonBasedOnCharacterisedActivity.ActivityNameCharacteristicPair(Agreed.NAME, characteristic));
+        reason = new ReasonBasedOnCharacterisedActivity(reasonProducers,
+                                                        "потому что",
+                                                        activityNameCharacteristicPairs);
+
+        reasons.add(reason);
+
+        reasonProducers = new ArrayList<>();
+        reasonProducers.add(uncleUlius);
+        characteristic = new Characteristic("уже");
+        activityNameCharacteristicPairs = new ArrayList<>();
+        activityNameCharacteristicPairs.add(
+                new ReasonBasedOnCharacterisedActivity.ActivityNameCharacteristicPair(TimeToGo.NAME, characteristic));
+        reason = new ReasonBasedOnCharacterisedActivity(reasonProducers,
+                                                        "и",
+                                                        activityNameCharacteristicPairs);
+
+        reasons.add(reason);
+
+
+        characteristic = new Characteristic("свои");
+        thoughts.addCharacteristic(characteristic);
+        uncleUlius.withEnvironments(thoughts);
+
+        characteristic = new Characteristic("тут");
+        uncleUlius.withCharacteristic(characteristic);
+
+        uncleUlius.withReasons("", reasons);
+        story.append(uncleUlius.doActivity(HaveToAbort.NAME))
+             .append(System.lineSeparator());
+
         return story.toString();
     }
 }
