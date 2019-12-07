@@ -1,21 +1,15 @@
 package story.activity;
 
-import story.activity.annotations.WithSingleObject;
+import story.activity.annotations.WithoutSubject;
 
-@WithSingleObject
+@WithoutSubject
 public final class Think extends Activity {
-    public static final String NAME = "думать";
-
-
-    @Override
-    public String getName() {
-        return NAME;
+    public Think(String name, String... requirements) {
+        super(name, requirements);
     }
 
     @Override
     protected String appendExecutionResult(String result) {
-        result += "думал о " + environments[0].getName();
-
-        return result;
+        return result += "думать";
     }
 }

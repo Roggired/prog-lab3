@@ -1,82 +1,109 @@
 package repository;
 
-import repository.annotations.DTO;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+import repository.annotations.Entity;
 import repository.annotations.Id;
 import repository.annotations.Stored;
 import repository.exception.RepositoryException;
+import story.environment.EnvironmentEntity;
+import story.pokemon.PokemonEntity;
 
 import java.lang.reflect.Field;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.*;
 import java.util.*;
 
-public final class SQLiteRepository<T> extends Repository<T>{
+public final class SQLiteRepository<T> implements Repository<T>{
     private static final String DRIVER_CLASS_NAME = "org.sqlite.JDBC";
     private static final String URL_PROTOCOL = "jdbc:sqlite:";
 
     private static final String NOT_DTO_OBJECT_EXCEPTION = "Объект не аннотирован как DTO: ";
     private static final String NO_ID_MARKED_FIELD_EXCEPTION = "В объекте ни одно поле не помечено аннотацией Id: ";
 
-    private String tableName;
+    private static final Map<Class<?>, String> entityClassMap = new HashMap<Class<?>, String>() {{
+        put(PokemonEntity.class, "Pokemons");
+        put(EnvironmentEntity.class, "Environments");
+    }};
+
+    private static final Map<String, String> tablesMap = new HashMap<String, String>() {{
+        put("Names", "Names");
+        put("Activities", "Activities");
+        put("Characteristics", "Characteristics");
+        put("Features", "Features");
+    }};
+
+    private Connection connection;
 
 
-    public SQLiteRepository(String path,
-                            String tableName) throws ClassNotFoundException, SQLException {
-        Class.forName(DRIVER_CLASS_NAME);
-        connection = DriverManager.getConnection(URL_PROTOCOL + path);
-
-        useTable(tableName);
-    }
-
-    public void useTable(String tableName) {
-        this.tableName = tableName;
+    @AssistedInject
+    public SQLiteRepository(@Assisted String pathToDB) throws RepositoryException {
+        try {
+            Class.forName(DRIVER_CLASS_NAME);
+            connection = DriverManager.getConnection(URL_PROTOCOL + pathToDB);
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RepositoryException(e);
+        }
     }
 
     @Override
     public void save(T object) throws RepositoryException {
         templateProcessorMethod(object, statement -> {
+            Integer id = getId(object);
+
             List<Field> storedFields = getStoredFields(object);
+            List<String> tableKeys = getTableKeys(storedFields);
 
-            String query = "INSERT INTO '" + tableName + "' VALUES(";
+            for (int index = 0; index < storedFields.size(); index++) {
+                Field storedField = storedFields.get(index);
+                String tableKey = tableKeys.get(index);
+                String tableName = tablesMap.get(tableKey);
 
-            query = appendStoredValues(query, storedFields, object);
+                List<String> insertQueries = createInsertQueries(object,
+                                                                 id,
+                                                                 storedField,
+                                                                 tableName);
 
-            statement.execute(query);
+                for (String insertQuery : insertQueries) {
+                    statement.execute(insertQuery);
+                }
+            }
         });
     }
 
     @Override
-    public T get(T object) throws RepositoryException {
-        templateProcessorMethod(object, statement -> {
-            Integer id = getId(object);
+    public T get(Class<T> clazz, Integer id) throws RepositoryException {
+        try {
+            T object = clazz.getConstructor().newInstance();
 
-            String query = "SELECT * FROM '" + tableName + "' WHERE id = " + id;
+            templateProcessorMethod(object, statement -> {
+                List<Field> storedFields = getStoredFields(object);
+                List<String> tableKeys = getTableKeys(storedFields);
 
-            ResultSet resultSet = statement.executeQuery(query);
+                for (int index = 0; index < tableKeys.size(); index++) {
+                    Field storedField = storedFields.get(index);
+                    String tableKey = tableKeys.get(index);
+                    String tableName = tablesMap.get(tableKey);
 
-            writeResultInto(object, resultSet);
-        });
+                    String query = createSelectQuery(tableName, id);
 
-        return object;
+                    ResultSet resultSet = statement.executeQuery(query);
+
+                    writeResultInto(object, storedField, resultSet);
+                }
+            });
+
+            return object;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RepositoryException(e);
+        }
     }
 
     @Override
     public void modify(T object) throws RepositoryException {
         templateProcessorMethod(object, statement -> {
-            Integer id = getId(object);
-
-            List<Field> storedFields = getStoredFields(object);
-
-            String query = "UPDATE '" + tableName + "' SET ";
-
-            query = appendKeyToValueStoredPairs(object,
-                                                query,
-                                                storedFields);
-            query += " WHERE id=" + id;
-
-            statement.execute(query);
+            delete(object);
+            save(object);
         });
     }
 
@@ -85,14 +112,19 @@ public final class SQLiteRepository<T> extends Repository<T>{
         templateProcessorMethod(object, statement -> {
             Integer id = getId(object);
 
-            String query = "DELETE FROM '" + tableName + "' WHERE id = " + id;
+            List<Field> storedFields = getStoredFields(object);
+            List<String> tableKeys = getTableKeys(storedFields);
 
-            statement.execute(query);
+            List<String> deleteQueries = createDeleteQueries(tableKeys, id);
+
+            for (String deleteQuery : deleteQueries) {
+                statement.execute(deleteQuery);
+            }
         });
     }
 
     private void templateProcessorMethod(T object, Consumer<Statement> queryLogic) throws RepositoryException {
-        checkThatObjectIsDTO(object);
+        checkThatObjectIsEntity(object);
 
         try(Statement statement = connection.createStatement()) {
             queryLogic.accept(statement);
@@ -106,8 +138,8 @@ public final class SQLiteRepository<T> extends Repository<T>{
         return null;
     }
 
-    private void checkThatObjectIsDTO(T object) throws RepositoryException {
-        if (object.getClass().getAnnotation(DTO.class) == null) {
+    private void checkThatObjectIsEntity(T object) throws RepositoryException {
+        if (object.getClass().getAnnotation(Entity.class) == null) {
             throw new RepositoryException(NOT_DTO_OBJECT_EXCEPTION + object.getClass().getName());
         }
     }
@@ -143,64 +175,86 @@ public final class SQLiteRepository<T> extends Repository<T>{
         return (Integer) getIdField(object).get(object);
     }
 
-    private String appendStoredValues(String query,
-                                      List<Field> storedFields,
-                                      T object) throws IllegalAccessException {
-        StringBuilder stringBuilder = new StringBuilder(query);
+    private List<String> getTableKeys(List<Field> storedFields) {
+        List<String> tableKeys = new ArrayList<>();
 
-        for (Field storedField : storedFields) {
-            stringBuilder.append("'");
-            stringBuilder.append(storedField.get(object));
-            stringBuilder.append("'");
-
-            if (storedFields.indexOf(storedField) != storedFields.size() - 1) {
-                stringBuilder.append(", ");
-            }
-        }
         storedFields.forEach(storedField -> {
-
+            tableKeys.add(storedField.getAnnotation(Stored.class).TableKey());
         });
-        stringBuilder.append(")");
 
-        return stringBuilder.toString();
+        return tableKeys;
     }
 
-    private String appendKeyToValueStoredPairs(T object,
-                                               String query,
-                                               List<Field> storedFields) throws IllegalAccessException {
-        StringBuilder queryBuilder = new StringBuilder(query);
-        for (Field storedField : storedFields) {
-            String fieldName = storedField.getName();
-            Object fieldValue = storedField.get(object);
+    private String createSelectQuery(String tableName,
+                                     Integer id) {
+        return "SELECT * FROM '" + tableName + "' WHERE id=" + id;
+    }
 
-            queryBuilder.append(fieldName);
-            queryBuilder.append("=");
+    private List<String> createInsertQueries(T object,
+                                             Integer id,
+                                             Field storedField,
+                                             String tableName) throws IllegalAccessException {
+        List<String> insertQueries = new ArrayList<>();
 
-            if (storedField.getType().equals(String.class)) {
-                queryBuilder.append("'" + fieldValue + "'");
-            } else {
-                queryBuilder.append("" + fieldValue + "");
+        String generalString = "INSERT INTO '" + tableName + "' VALUES(" + id + ",";
+
+        StringBuilder query = new StringBuilder(generalString);
+
+        if (storedField.getType().equals(List.class)) {
+            List list = (List)storedField.get(object);
+
+            for (Object member : list) {
+                query.append("'");
+                query.append(member);
+                query.append("')");
+
+                insertQueries.add(query.toString());
+
+                query = new StringBuilder(generalString);
             }
 
-            if (storedFields.indexOf(storedField) != storedFields.size() - 1) {
-                queryBuilder.append(", ");
-            }
+            return insertQueries;
         }
-        return queryBuilder.toString();
+
+        query.append("'");
+        query.append(storedField.get(object));
+        query.append("')");
+
+        insertQueries.add(query.toString());
+
+        return insertQueries;
     }
 
-    private void writeResultInto(T object, ResultSet resultSet) throws SQLException, IllegalAccessException {
-        List<Field> storedFields = getStoredFields(object);
+    private List<String> createDeleteQueries(List<String> tableKeys,
+                                             Integer id) {
+        List<String> deleteQueries = new ArrayList<>();
 
-        int index = 1;
-        do {
-            Object entity = resultSet.getObject(index);
-            storedFields.get(index - 1).set(object, entity);
+        for (int index = 0; index < tableKeys.size(); index++) {
+            String tableName = tablesMap.get(tableKeys.get(index));
+            String query = "DELETE FROM '" + tableName + "' WHERE id=" + id;
 
-            index++;
-        } while (resultSet.next());
+            deleteQueries.add(query);
+        }
+
+        return deleteQueries;
     }
+    private void writeResultInto(T object,
+                                 Field storedField,
+                                 ResultSet resultSet) throws SQLException, IllegalAccessException {
+        if (storedField.getType().equals(List.class)) {
+            List list = new ArrayList();
 
+            while(resultSet.next()) {
+                list.add(resultSet.getObject(2));
+            }
+
+            storedField.set(object, list);
+
+            return;
+        }
+
+        storedField.set(object, resultSet.getObject(2));
+    }
 
     @FunctionalInterface
     public interface Consumer<E> {

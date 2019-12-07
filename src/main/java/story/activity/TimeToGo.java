@@ -1,15 +1,14 @@
 package story.activity;
 
-import story.activity.exception.ActivityException;
 
-public class TimeToGo extends Activity {
+public final class TimeToGo extends Activity {
     public static final String NAME = "пора было уходить";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public TimeToGo(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result) {

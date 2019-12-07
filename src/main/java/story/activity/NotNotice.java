@@ -6,10 +6,11 @@ import story.activity.annotations.WithSingleObject;
 public final class NotNotice extends Activity {
     public static final String NAME = "не замечать";
 
-    @Override
-    public String getName() {
-        return NAME;
+
+    public NotNotice(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result) {

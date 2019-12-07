@@ -3,10 +3,11 @@ package story.activity;
 public final class NotUnderstand extends Activity{
     public static final String NAME = "не понять";
 
-    @Override
-    public String getName() {
-        return NAME;
+
+    public NotUnderstand(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result) {

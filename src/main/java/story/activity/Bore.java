@@ -1,13 +1,13 @@
 package story.activity;
 
-public class Bore extends Activity {
+public final class Bore extends Activity {
     public static final String NAME = "скучать";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public Bore(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result) {

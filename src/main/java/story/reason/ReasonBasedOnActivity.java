@@ -7,10 +7,10 @@ public final class ReasonBasedOnActivity extends Reason {
     private List<String> activityNames;
 
 
-    public ReasonBasedOnActivity(List<IReasonProducer> reasonProducers,
+    public ReasonBasedOnActivity(List<ReasonProducer> reasonProducers,
                                  String preposition,
                                  List<String> activityNames) {
-        super(reasonProducers, preposition);
+        //super(reasonProducers, preposition);
         this.activityNames = activityNames;
     }
 

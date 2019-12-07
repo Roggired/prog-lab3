@@ -3,14 +3,14 @@ package story.activity;
 import story.activity.annotations.WithoutSubject;
 
 @WithoutSubject
-public class BecomeClear extends Activity {
+public final class BecomeClear extends Activity {
     public static final String NAME = "станет ясно";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public BecomeClear(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result) {

@@ -1,14 +1,14 @@
 package story.activity;
 
 
-public class Meet extends Activity {
+public final class Meet extends Activity {
     public static final String NAME = "встречаться";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public Meet(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result)  {

@@ -6,10 +6,13 @@ import java.util.List;
 public abstract class Reason {
     protected String preposition;
 
-    protected List<? extends IReasonProducer> reasonProducers;
+    protected List<? extends ReasonProducer> reasonProducers;
 
 
-    public Reason(List<? extends IReasonProducer> reasonProducers,
+    public Reason() {
+        reasonProducers = new ArrayList<>();
+    }
+    /*public Reason(List<? extends IReasonProducer> reasonProducers,
                   String preposition) {
         if (reasonProducers == null) {
             this.reasonProducers = new ArrayList<>();
@@ -18,7 +21,7 @@ public abstract class Reason {
         }
 
         this.preposition = preposition;
-    }
+    }*/
 
 
     public abstract String getDescription();

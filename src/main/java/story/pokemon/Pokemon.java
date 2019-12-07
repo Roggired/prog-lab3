@@ -4,7 +4,7 @@ import story.activity.*;
 import story.activity.exception.*;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
-import story.reason.IReasonProducer;
+import story.reason.ReasonProducer;
 import story.environment.Environment;
 import story.characteristic.Characteristic;
 import story.environment.feature.Feature;
@@ -13,7 +13,7 @@ import story.reason.Reason;
 
 import java.util.List;
 
-public class Pokemon extends Environment implements IReasonProducer {
+public class Pokemon extends Environment implements ReasonProducer {
     private String name;
     private List<Activity> activities;
     private HealthySense healthySense;
@@ -27,12 +27,10 @@ public class Pokemon extends Environment implements IReasonProducer {
                    @Assisted List<Characteristic> characteristics,
                    @Assisted List<Feature> features,
                    HealthySense healthySense) {
-        super(name, features);
+        super(name, characteristics, features);
         this.name = name;
         this.activities = activities;
         this.healthySense = healthySense;
-
-        characteristics.forEach(characteristic -> addCharacteristic(characteristic));
     }
 
     public void withCharacteristic(Characteristic characteristic) {
@@ -46,11 +44,11 @@ public class Pokemon extends Environment implements IReasonProducer {
         doer.environments = environments;
     }
 
-    public String doActivity(String activityName) throws ActivityException {
-        Activity activity = findActivity(activityName);
+    public String doActivity(Class<?> activityClass) throws ActivityException {
+        Activity activity = findActivity(activityClass);
 
         if (activity == null) {
-            throw new CannotActivityException(createCannotActivityExceptionText(activityName));
+            throw new CannotActivityException(createCannotActivityExceptionText(activityClass));
         }
 
         activity.withCharacteristic(doer.characteristic);
@@ -63,51 +61,18 @@ public class Pokemon extends Environment implements IReasonProducer {
         doer = new Doer();
         return result;
     }
-    /*public String doActivity(String name,
-                             Environment ...environments) throws ActivityException {
-        if (!canActivity(name)) {
-            throw new CannotActivityException(createCannotActivityExceptionText(name));
-        }
 
+    private Activity findActivity(Class<?> activityClass) {
         for (Activity activity: activities) {
-            if (activity.getName().equals(name)) {
-                healthySense.checkEnvironmentForActivity(activity, environments);
-                return activity.executeFor(this, environments);
-            }
-        }
-
-        return null;
-    }
-
-    public String doActivity(String name,
-                             Characteristic activityCharacteristic,
-                             Environment ... environments) throws ActivityException {
-        if (!canActivity(name)) {
-            throw new CannotActivityException(createCannotActivityExceptionText(name));
-        }
-
-        for (Activity activity: activities) {
-            if (activity.getName().equals(name)) {
-                healthySense.checkEnvironmentForActivity(activity, environments);
-                activity.withCharacteristic(activityCharacteristic);
-                return activity.executeFor(this, environments);
-            }
-        }
-
-        return null;
-    }*/
-
-    private Activity findActivity(String name) {
-        for (Activity activity: activities) {
-            if (activity.getName().equals(name)) {
+            if (activity.getClass().equals(activityClass)) {
                 return activity;
             }
         }
 
         return null;
     }
-    private String createCannotActivityExceptionText(String activityName) {
-        return this.getClass() + " " + this.name + ": 'I cannot do " + activityName + "!'";
+    private String createCannotActivityExceptionText(Class<?> activityClass) {
+        return this.getClass() + " " + this.name + ": 'I cannot do " + activityClass.getName() + "!'";
     }
 
 

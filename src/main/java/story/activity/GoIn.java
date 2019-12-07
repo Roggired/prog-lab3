@@ -2,21 +2,25 @@ package story.activity;
 
 import story.activity.annotations.WithSingleObject;
 import story.activity.exception.ActivityException;
+import story.activity.exception.NoFeatureException;
 
 @WithSingleObject
-public class GoIn extends Activity {
+public final class GoIn extends Activity {
     public static final String NAME = "идти в";
-    private static final String OBJECT_REQUIRED_FEATURE = "можно идти";
+
+    private String objectRequiredFeature = "можно идти";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public GoIn(String name, String... requirements) {
+        super(name, requirements);
+
+        //objectRequiredFeature = requirements[0];
     }
 
+
     @Override
-    protected String appendExecutionResult(String result) throws ActivityException {
-        checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
+    protected String appendExecutionResult(String result) throws NoFeatureException {
+        checkObjectRequiredFeature(objectRequiredFeature, environments);
 
         result += "пошел в " + environments[0].getName();
 

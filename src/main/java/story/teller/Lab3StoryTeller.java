@@ -2,17 +2,7 @@ package story.teller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Injector;
-import story.activity.*;
 import story.activity.exception.ActivityException;
-import story.characteristic.Characteristic;
-import story.reason.IReasonProducer;
-import story.reason.Reason;
-import story.reason.ReasonBasedOnActivity;
-import story.environment.Environment;
-import story.pokemon.Pokemon;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class Lab3StoryTeller extends StoryTeller {
     private final String filleJsonFileName = "fille.json",
@@ -30,7 +20,7 @@ public final class Lab3StoryTeller extends StoryTeller {
 
     @Override
     public String tellStory(Injector injector, ObjectMapper objectMapper) throws ActivityException {
-        Pokemon fille = createPokemonFromJSON(filleJsonFileName,
+        /*Pokemon fille = createPokemonFromJSON(filleJsonFileName,
                                               objectMapper,
                                               injector);
         Pokemon rulle = createPokemonFromJSON(rulleJsonFileName,
@@ -68,41 +58,41 @@ public final class Lab3StoryTeller extends StoryTeller {
         StringBuilder result = new StringBuilder();
 
         fille.withEnvironments(hall);
-        result.append(fille.doActivity(GoIn.NAME))
+        result.append(fille.doActivity(GoIn.class))
                 .append(System.lineSeparator());
 
         rulle.withEnvironments(hall);
-        result.append(rulle.doActivity(GoIn.NAME))
+        result.append(rulle.doActivity(GoIn.class))
                 .append(System.lineSeparator());
 
-        result.append(oskar.doActivity(StayAlong.NAME))
+        result.append(oskar.doActivity(StayAlong.class))
                 .append(System.lineSeparator());
 
-        result.append(oskar.doActivity(Bore.NAME))
+        result.append(oskar.doActivity(Bore.class))
                 .append(System.lineSeparator());
 
         Characteristic characteristic = new Characteristic("Чтобы посмотреть, что делают его новые друзья");
         oskar.withCharacteristic(characteristic);
         oskar.withEnvironments(hall);
-        result.append(oskar.doActivity(GoIn.NAME))
+        result.append(oskar.doActivity(GoIn.class))
                 .append(System.lineSeparator());
 
         karlson.withEnvironments(underWindow);
-        result.append(karlson.doActivity(GoOver.NAME))
+        result.append(karlson.doActivity(GoOver.class))
                 .append(System.lineSeparator());
 
         karlson.withEnvironments(wallet, soupBowl);
-        result.append(karlson.doActivity(PutIn.NAME))
+        result.append(karlson.doActivity(PutIn.class))
                 .append(System.lineSeparator());
 
         fille.withEnvironments(soup);
-        fille.doActivity(Eat.NAME);
+        fille.doActivity(Eat.class);
 
         rulle.withEnvironments(soup);
-        rulle.doActivity(Eat.NAME);
+        rulle.doActivity(Eat.class);
 
         oskar.withEnvironments(soup);
-        oskar.doActivity(Eat.NAME);
+        oskar.doActivity(Eat.class);
 
 
         List<IReasonProducer> reasonProducers = new ArrayList<>();
@@ -110,7 +100,7 @@ public final class Lab3StoryTeller extends StoryTeller {
         reasonProducers.add(rulle);
         reasonProducers.add(oskar);
         List<String> activityNames = new ArrayList<>();
-        activityNames.add(Eat.NAME);
+        activityNames.add(Eat.class.getName());
         Reason reason = new ReasonBasedOnActivity(reasonProducers,
                                                   "потому что",
                                                   activityNames);
@@ -121,7 +111,7 @@ public final class Lab3StoryTeller extends StoryTeller {
 
 
         karlson.withEnvironments(watches, lamp);
-        result.append(karlson.doActivity(AttachTo.NAME))
+        result.append(karlson.doActivity(AttachTo.class))
                 .append(System.lineSeparator());
 
 
@@ -135,22 +125,23 @@ public final class Lab3StoryTeller extends StoryTeller {
 
         fille.withCharacteristic(characteristic);
         fille.withEnvironments(watches);
-        result.append(fille.doActivity(See.NAME))
+        result.append(fille.doActivity(See.class))
                 .append(System.lineSeparator());
 
         rulle.withCharacteristic(characteristic);
         rulle.withEnvironments(watches);
-        result.append(rulle.doActivity(See.NAME))
+        result.append(rulle.doActivity(See.class))
                 .append(System.lineSeparator());
 
         oskar.withCharacteristic(characteristic);
         oskar.withEnvironments(watches);
-        result.append(oskar.doActivity(See.NAME))
+        result.append(oskar.doActivity(See.class))
                 .append(System.lineSeparator());
 
         result.append(System.lineSeparator());
         result.append(System.lineSeparator());
 
-        return result.toString();
+        return result.toString();*/
+        return null;
     }
 }

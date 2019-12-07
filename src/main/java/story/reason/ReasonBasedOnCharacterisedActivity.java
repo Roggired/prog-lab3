@@ -8,10 +8,10 @@ public class ReasonBasedOnCharacterisedActivity extends Reason {
     private List<ActivityNameCharacteristicPair> activityNameCharacteristicPairs;
 
 
-    public ReasonBasedOnCharacterisedActivity(List<? extends IReasonProducer> reasonProducers,
+    public ReasonBasedOnCharacterisedActivity(List<? extends ReasonProducer> reasonProducers,
                                               String preposition,
                                               List<ActivityNameCharacteristicPair> activityNameCharacteristicPairs) {
-        super(reasonProducers, preposition);
+        //super(reasonProducers, preposition);
         this.activityNameCharacteristicPairs = activityNameCharacteristicPairs;
     }
 

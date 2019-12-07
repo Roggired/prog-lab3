@@ -2,21 +2,25 @@ package story.activity;
 
 import story.activity.annotations.WithSingleObject;
 import story.activity.exception.ActivityException;
+import story.activity.exception.NoFeatureException;
 
 @WithSingleObject
-public class GoOver extends Activity {
+public final class GoOver extends Activity {
     public static final String NAME = "перемахнуть";
-    private static final String OBJECT_REQUIRED_FEATURE = "можно перемахнуть";
+
+    private String objectRequiredFeature = "можно перемахнуть";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public GoOver(String name, String... requirements) {
+        super(name, requirements);
+
+        //objectRequiredFeature = requirements[0];
     }
 
+
     @Override
-    protected String appendExecutionResult(String result) throws ActivityException {
-        checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
+    protected String appendExecutionResult(String result) throws NoFeatureException {
+        checkObjectRequiredFeature(objectRequiredFeature, environments);
 
         result += "перемахнул через " + environments[0].getName();
 

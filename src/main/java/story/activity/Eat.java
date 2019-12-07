@@ -1,20 +1,24 @@
 package story.activity;
 
 import story.activity.exception.ActivityException;
+import story.activity.exception.NoFeatureException;
 
-public class Eat extends Activity{
+public final class Eat extends Activity{
     public static final String NAME = "съели";
-    private static final String OBJECT_REQUIRED_FEATURE = "это можно съесть";
+
+    private String objectRequiredFeature = "это можно съесть";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public Eat(String name, String... requirements) {
+        super(name, requirements);
+
+        //objectRequiredFeature = requirements[0];
     }
 
+
     @Override
-    protected String appendExecutionResult(String result) throws ActivityException {
-        checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
+    protected String appendExecutionResult(String result) throws NoFeatureException {
+        checkObjectRequiredFeature(objectRequiredFeature, environments);
 
         result += "съел " + environments[0].getName();
 

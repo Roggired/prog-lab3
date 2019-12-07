@@ -2,14 +2,14 @@ package story.activity;
 
 import java.util.Arrays;
 
-public class See extends Activity {
+public final class See extends Activity {
     public static final String NAME = "увидеть";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public See(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result) {

@@ -2,22 +2,25 @@ package story.activity;
 
 import story.activity.annotations.WithSingleObject;
 import story.activity.exception.ActivityException;
+import story.activity.exception.NoFeatureException;
 
 @WithSingleObject
 public final class Squeeze extends Activity {
     public static final String NAME = "сжать";
 
-    private final String OBJECT_REQUIRED_FEATURE = "это можно сжать";
+    private String objectRequiredFeature = "это можно сжать";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public Squeeze(String name, String... requirements) {
+        super(name, requirements);
+
+        //objectRequiredFeature = requirements[0];
     }
 
+
     @Override
-    protected String appendExecutionResult(String result) throws ActivityException {
-        checkObjectRequiredFeature(OBJECT_REQUIRED_FEATURE, environments);
+    protected String appendExecutionResult(String result) throws NoFeatureException {
+        checkObjectRequiredFeature(objectRequiredFeature, environments);
 
         result += "сжал " + environments[0].getName();
 

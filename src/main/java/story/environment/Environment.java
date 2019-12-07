@@ -15,23 +15,22 @@ public class Environment {
 
     protected List<Feature> features;
 
-    protected List<Characteristic> characteristics = new ArrayList<>();
+    protected List<Characteristic> characteristics;
 
 
     public Environment() {}
 
     @AssistedInject
     public Environment(@Assisted String name,
+                       @Assisted List<Characteristic> characteristics,
                        @Assisted List<Feature> features) {
         this.name = name;
+        this.characteristics = characteristics;
         this.features = features;
     }
 
 
     public void addCharacteristic(Characteristic characteristic) {
-        if (characteristics == null) {
-            characteristics = new ArrayList<>();
-        }
         characteristics.add(characteristic);
     }
     public boolean haveFeature(String featureName) {
@@ -45,7 +44,7 @@ public class Environment {
     }
 
     public String getName() {
-        if (characteristics != null && !characteristics.isEmpty()) {
+        if (!characteristics.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             characteristics.forEach(characteristic -> stringBuilder.append(characteristic.getName()).append(" "));
 

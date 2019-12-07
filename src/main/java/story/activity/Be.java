@@ -1,13 +1,13 @@
 package story.activity;
 
-public class Be extends Activity {
+public final class Be extends Activity {
     public static final String NAME = "бывать";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public Be(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result) {

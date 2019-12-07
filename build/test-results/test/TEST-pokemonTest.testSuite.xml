@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="pokemonTest.testSuite" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-11-18T10:32:45" hostname="LAPTOP-1NMJ4L39" time="0.004">
+<testsuite name="pokemonTest.testSuite" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-12-07T11:05:44" hostname="LAPTOP-1NMJ4L39" time="0.001">
   <properties/>
-  <testcase name="testSomeCoolFeature" classname="pokemonTest.testSuite" time="0.004"/>
+  <testcase name="testSomeCoolFeature" classname="pokemonTest.testSuite" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

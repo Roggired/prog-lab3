@@ -1,13 +1,13 @@
 package story.activity;
 
-public class StayAlong extends Activity {
+public final class StayAlong extends Activity {
     public static final String NAME = "остаться одному";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public StayAlong(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result) {

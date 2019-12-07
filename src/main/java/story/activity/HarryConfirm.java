@@ -1,13 +1,13 @@
 package story.activity;
 
-public class HarryConfirm extends Activity {
+public final class HarryConfirm extends Activity {
     public static final String NAME = "поспешить подтвердить";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public HarryConfirm(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result) {

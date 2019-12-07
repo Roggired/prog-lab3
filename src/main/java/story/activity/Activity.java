@@ -16,11 +16,17 @@ import java.util.List;
  *
  */
 public abstract class Activity {
+    protected String name;
     protected Pokemon pokemon;
     protected Environment[] environments;
     protected Characteristic characteristic;
     protected String reasonPreposition;
     protected List<Reason> reasons;
+
+
+    public Activity(String name, String... requirements) {
+        this.name = name;
+    }
 
 
     public void withCharacteristic(Characteristic characteristic) {
@@ -32,10 +38,12 @@ public abstract class Activity {
         this.reasons = reasons;
     }
 
-    public abstract String getName();
+    public String getName() {
+        return name;
+    }
 
     public final String executeFor(Pokemon pokemon,
-                             Environment ...environments) throws ActivityException{
+                                   Environment ...environments) throws ActivityException{
         this.pokemon = pokemon;
         this.environments = environments;
 
@@ -43,6 +51,7 @@ public abstract class Activity {
 
         if (this.getClass().getAnnotation(WithoutSubject.class) == null) {
             result = appendPokemonName(result);
+            result += " ";
         }
 
         result = appendCharacteristic(result);
@@ -53,14 +62,14 @@ public abstract class Activity {
     }
 
     protected String appendPokemonName(String result) {
-        return result + pokemon.getName() + " ";
+        return result + pokemon.getName();
     }
     protected String appendCharacteristic(String result) {
-        if (characteristic == null) {
+        if (characteristic == null || characteristic.getName().equals("")) {
             return result;
         }
 
-        return result +  " " + characteristic.getName() + " ";
+        return result + characteristic.getName() + " ";
     }
     protected abstract String appendExecutionResult(String result) throws ActivityException;
 
@@ -69,10 +78,15 @@ public abstract class Activity {
             return result;
         }
 
-        StringBuilder stringBuilder = new StringBuilder(result + " ");
-        reasons.forEach(reason -> stringBuilder.append(reason.getDescription()).append(" "));
+        String generalString = result + " ";
+        if (reasonPreposition != null && !reasonPreposition.equals("")) {
+            generalString += reasonPreposition + " ";
+        }
+        StringBuilder stringBuilder = new StringBuilder(generalString);
+        reasons.forEach(reason -> stringBuilder.append(reason.getDescription()).append(" и "));
 
-        return stringBuilder.toString().trim();
+        String temp = stringBuilder.toString();
+        return temp.substring(0, temp.length() - 2);
     }
 
     protected void checkObjectRequiredFeature(String requiredFeature,

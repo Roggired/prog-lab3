@@ -63,7 +63,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\prog-lab3-1.0.jar;%APP_HOME%\lib\guice-assistedinject-4.2.2.jar;%APP_HOME%\lib\jackson-module-guice-2.10.0.pr3.jar;%APP_HOME%\lib\guice-4.2.2.jar;%APP_HOME%\lib\jackson-databind-2.10.0.jar;%APP_HOME%\lib\javax.inject-1.jar;%APP_HOME%\lib\aopalliance-1.0.jar;%APP_HOME%\lib\guava-25.1-android.jar;%APP_HOME%\lib\jackson-annotations-2.10.0.jar;%APP_HOME%\lib\jackson-core-2.10.0.jar;%APP_HOME%\lib\jsr305-3.0.2.jar;%APP_HOME%\lib\checker-compat-qual-2.0.0.jar;%APP_HOME%\lib\error_prone_annotations-2.1.3.jar;%APP_HOME%\lib\j2objc-annotations-1.1.jar;%APP_HOME%\lib\animal-sniffer-annotations-1.14.jar
+set CLASSPATH=%APP_HOME%\lib\prog-lab3-1.0.jar;%APP_HOME%\lib\guice-assistedinject-4.2.2.jar;%APP_HOME%\lib\jackson-module-guice-2.10.0.pr3.jar;%APP_HOME%\lib\guice-4.2.2.jar;%APP_HOME%\lib\jackson-databind-2.10.0.jar;%APP_HOME%\lib\sqlite-jdbc-3.28.0.jar;%APP_HOME%\lib\json-simple-1.1.1.jar;%APP_HOME%\lib\javax.inject-1.jar;%APP_HOME%\lib\aopalliance-1.0.jar;%APP_HOME%\lib\guava-25.1-android.jar;%APP_HOME%\lib\jackson-annotations-2.10.0.jar;%APP_HOME%\lib\jackson-core-2.10.0.jar;%APP_HOME%\lib\junit-4.10.jar;%APP_HOME%\lib\jsr305-3.0.2.jar;%APP_HOME%\lib\checker-compat-qual-2.0.0.jar;%APP_HOME%\lib\error_prone_annotations-2.1.3.jar;%APP_HOME%\lib\j2objc-annotations-1.1.jar;%APP_HOME%\lib\animal-sniffer-annotations-1.14.jar;%APP_HOME%\lib\hamcrest-core-1.1.jar
 
 @rem Execute prog-lab3
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %PROG_LAB3_OPTS%  -classpath "%CLASSPATH%" app.App %CMD_LINE_ARGS%

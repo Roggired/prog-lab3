@@ -1,13 +1,13 @@
 package story.activity;
 
-public class NotWantSeemPachyderms extends Activity {
+public final class NotWantSeemPachyderms extends Activity {
     public static final String NAME = "не хотеть показаться толстокожим";
 
 
-    @Override
-    public String getName() {
-        return NAME;
+    public NotWantSeemPachyderms(String name, String... requirements) {
+        super(name, requirements);
     }
+
 
     @Override
     protected String appendExecutionResult(String result) {
